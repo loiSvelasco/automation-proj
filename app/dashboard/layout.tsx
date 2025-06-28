@@ -47,14 +47,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </NavigationMenu>
       </header>
       <main className="flex-1">{children}</main>
-      <footer className="p-4 text-center text-sm text-gray-600 space-x-4">
-        <span>Merchants</span>
-        <span>Products</span>
-        <span>Profit</span>
-        <span>Loss</span>
-        <span>Collection</span>
-        <span>Expenses</span>
-        <div className="mt-2">© 2025 3S and R Frozen Meat Trading Inc.</div>
+      <footer className="p-4 text-sm text-gray-600 flex flex-col items-center">
+        <NavigationMenu>
+          <NavigationMenuList>
+            {[
+              "Merchants",
+              "Products",
+              "Profits",
+              "Loss",
+              "Collection",
+              "Expenses",
+            ].map((item) => (
+              <NavigationMenuItem key={item}>
+                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                  <Link href="#">{item}</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
+        <div className="mt-2 text-center">© 2025 3S and R Frozen Meat Trading Inc.</div>
       </footer>
     </div>
   );
