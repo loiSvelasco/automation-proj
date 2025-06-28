@@ -13,7 +13,7 @@ import Image from "next/image";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white text-gray-900">
       <header className="flex items-center justify-between px-8 py-4 border-b">
         <div className="flex items-center gap-4">
           <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center">
@@ -23,80 +23,41 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
         <NavigationMenu>
           <NavigationMenuList>
-            {/* {[
-              "Dashboard",
-              "Stocks",
-              "Sales",
-              "Operations",
-              "Reports",
-              "Backup/Restore",
-              "Logout",
-            ].map((item) => (
-              
-            ))} */}
             <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link href="#">Dashboard</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-
             <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link href="#">Stocks</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-
             <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link href="#">Sales</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-
             <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link href="#">Operations</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-
             <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link href="#">Reports</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-
             <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link href="#">Backup/Restore</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-
             <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link href="#">Logout</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-
           </NavigationMenuList>
         </NavigationMenu>
       </header>
@@ -104,77 +65,36 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <footer className="p-4 text-sm text-gray-600 flex flex-col items-center">
         <NavigationMenu>
           <NavigationMenuList>
-            {/* {[
-              "Merchants",
-              "Products",
-              "Profits",
-              "Loss",
-              "Collection",
-              "Expenses",
-            ].map((item) => (
-              <NavigationMenuItem key={item}>
-                <NavigationMenuLink
-                  asChild
-                  className={navigationMenuTriggerStyle()}
-                >
-                  <Link href="#">{item}</Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            ))} */}
             <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link href="#">Merchants</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-
             <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link href="#">Products</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-
             <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link href="/dashboard-profits">Profit</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-
             <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link href="/dashboard-loss">Loss</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-
             <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link href="#">Collection</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-
             <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                 <Link href="/dashboard-expenses">Expenses</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-
           </NavigationMenuList>
         </NavigationMenu>
         <div className="mt-2 text-center">
@@ -183,4 +103,4 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </footer>
     </div>
   );
-}
+} 
