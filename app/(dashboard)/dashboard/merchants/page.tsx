@@ -7,9 +7,9 @@ import { Input } from "@/components/ui/input"
 
 // Mock data for merchants
 const mockMerchants = [
-  { id: 1, code: "000001", description: "Tech Solutions Inc.", category: "Technology" },
-  { id: 2, code: "000002", description: "Green Garden Supply", category: "Retail" },
-  { id: 3, code: "000003", description: "Urban Cafe Chain", category: "Food & Beverage" },
+  { id: 1, code: "000001", description: "Pork Belly", category: "Pork" },
+  { id: 2, code: "000002", description: "Shanks", category: "Beef" },
+  { id: 3, code: "000003", description: "A5 Wagyu", category: "Beef" },
 ]
 
 export default function RegisteredMerchants() {
