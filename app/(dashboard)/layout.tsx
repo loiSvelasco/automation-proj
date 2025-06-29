@@ -73,12 +73,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="#">Merchants</Link>
+                <Link href="/dashboard/merchants">Merchants</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="#">Products</Link>
+                <Link href="/dashboard/products">Products</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>

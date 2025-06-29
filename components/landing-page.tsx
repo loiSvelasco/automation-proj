@@ -145,7 +145,7 @@ export default function LandingPage() {
                 asChild
                 className={navigationMenuTriggerStyle()}
               >
-                <Link href="#">Merchants</Link>
+                <Link href="/dashboard/merchants">Merchants</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
 
@@ -154,7 +154,7 @@ export default function LandingPage() {
                 asChild
                 className={navigationMenuTriggerStyle()}
               >
-                <Link href="#">Products</Link>
+                <Link href="/dashboard/products">Products</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
 
