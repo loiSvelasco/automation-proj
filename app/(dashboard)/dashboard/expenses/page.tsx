@@ -85,7 +85,7 @@ export default function DashboardExpensesPage() {
           </div>
         </Card>
       </div>
-      <main className="flex-1 w-full max-w-7xl mx-auto px-2 sm:px-4 pb-8">
+      <div className="flex-1 w-full max-w-7xl mx-auto px-2 sm:px-4 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 mt-8">
           {/* Total Expenses */}
           <Card className="bg-white text-gray-900 border-gray-200 flex flex-col justify-between min-h-[220px] col-span-1 shadow-sm">
@@ -188,7 +188,7 @@ export default function DashboardExpensesPage() {
             </CardContent>
           </Card>
         </div>
-      </main>
+      </div>
     </>
   );
 } 

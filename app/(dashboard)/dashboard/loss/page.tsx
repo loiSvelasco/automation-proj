@@ -65,7 +65,7 @@ const barHeights = [20, 35, 15, 40, 30, 60, 25, 50, 35, 45, 25, 70];
 
 export default function DashboardLossPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-white text-gray-900">
+    <>
       <div className="max-w-7xl mx-auto w-full px-2 sm:px-4 mt-6 mb-4">
         <Card className="bg-white border-gray-200 p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 shadow-sm">
           <div className="flex flex-wrap gap-2 items-center">
@@ -85,7 +85,7 @@ export default function DashboardLossPage() {
           </div>
         </Card>
       </div>
-      <main className="flex-1 w-full max-w-7xl mx-auto px-2 sm:px-4 pb-8">
+      <div className="flex-1 w-full max-w-7xl mx-auto px-2 sm:px-4 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 mt-8">
           {/* Total Losses */}
           <Card className="bg-white text-gray-900 border-gray-200 flex flex-col justify-between min-h-[220px] col-span-1 shadow-sm">
@@ -188,7 +188,7 @@ export default function DashboardLossPage() {
             </CardContent>
           </Card>
         </div>
-      </main>
-    </div>
+      </div>
+    </>
   );
 } 
