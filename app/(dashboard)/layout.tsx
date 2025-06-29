@@ -73,22 +73,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="#">Merchants</Link>
+                <Link href="/dashboard/merchants">Merchants</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="#">Products</Link>
+                <Link href="/dashboard/products">Products</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/dashboard-profits">Profit</Link>
+                <Link href="/dashboard/profits">Profit</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/dashboard-loss">Loss</Link>
+                <Link href="/dashboard/loss">Loss</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
@@ -98,7 +98,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/dashboard-expenses">Expenses</Link>
+                <Link href="/dashboard/expenses">Expenses</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
