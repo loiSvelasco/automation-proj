@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Home, FileText, Users, Settings, ShoppingCart, BarChart3 } from "lucide-react"
+import { Home, FileText, Users, Settings, ShoppingCart, BarChart3, ClipboardCheck } from "lucide-react"
 
 export default function PagesDirectory() {
   // Organize your pages by categories for better navigation
@@ -44,6 +44,16 @@ export default function PagesDirectory() {
         { name: "Profile", href: "/settings/profile", description: "User profile settings" },
         { name: "Preferences", href: "/settings/preferences", description: "User preferences" },
         { name: "Security", href: "/settings/security", description: "Security settings" },
+      ],
+    },
+    {
+      title: "Stocks",
+      description: "Stocks pages and dashboard",
+      icon: <ClipboardCheck className="h-5 w-5" />,
+      pages: [
+        { name: "Stocks", href: "/stocks", description: "Stocks Landing Page" },
+        { name: "Items", href: "/stocks/items", description: "Stock Items Page" },
+        { name: "Receiving", href: "/stocks/receiving", description: "Receiving Stocks Pages" },
       ],
     },
   ]
