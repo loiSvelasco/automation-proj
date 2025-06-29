@@ -190,7 +190,7 @@ export default function LandingPage() {
                 asChild
                 className={navigationMenuTriggerStyle()}
               >
-                <Link href="#">Collection</Link>
+                <Link href="/dashboard/collections">Collection</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
 
