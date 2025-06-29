@@ -24,6 +24,7 @@ included themed components are:
 - card
 - input
 - label
+- badge
 
 HiFi pages can be found in:
 
