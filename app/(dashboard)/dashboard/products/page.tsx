@@ -57,7 +57,7 @@ export default function RegisteredProducts() {
       </div>
 
       {/* Table */}
-      <div className="border border-gray-200 rounded-lg overflow-hidden">
+      <div className="overflow-x-auto w-full">
         <table className="w-full">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
