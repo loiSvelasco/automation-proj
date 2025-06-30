@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Info } from "lucide-react"
+import Link from "next/link"
 
 export function LoginForm({
   className,
@@ -16,38 +18,40 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+      <Card className="border-hidden shadow-none">
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
+          <Link href="/" className="items-center justify-center flex mb-4">
+            <img
+              src="/logo.jpg"
+              width={160}
+              height={160}
+              alt="3sandrlogo"
+            />
+          </Link>
+          <CardTitle className="text-center text-4xl">Automation System</CardTitle>
+          <CardDescription className="text-center text-sm text-muted-foreground">
+            3S&R Frozen Meat Products Trading Inc.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form>
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-3">
               <div className="grid gap-3">
-                <Label htmlFor="email">Email</Label>
+                {/* <Label htmlFor="email">Email</Label> */}
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
+                  id="username"
+                  type="text"
+                  placeholder="username"
                   required
                 />
               </div>
-              <div className="grid gap-3">
+              <div className="grid">
                 <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
+                  {/* <Label htmlFor="password">Password</Label> */}
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" placeholder="password" type="password" required />
               </div>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col mt-4 gap-3">
                 <Button type="submit" className="w-full">
                   Login
                 </Button>
@@ -57,9 +61,11 @@ export function LoginForm({
               </div>
             </div>
             <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
-              <a href="#" className="underline underline-offset-4">
-                Sign up
+              <a
+                href="#"
+                className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+              >
+               <Info className="inline"/> Forgot your password?
               </a>
             </div>
           </form>
