@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FaEdit, FaTrash, FaSearch, FaPlus, FaCalendarAlt, FaCheck, FaTimes, FaList, FaCreditCard, FaCartPlus } from "react-icons/fa";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table"
 
 const merchantOptions = [
   "Melchora B. Aquino",
@@ -92,36 +93,36 @@ export default function CheckoutPage() {
         </div>
       </div>
       {/* Table */}
-      <div className="overflow-x-auto border-2 border-blue-400 rounded mb-8">
-        <table className="min-w-full bg-white text-base">
-          <thead>
-            <tr className="border-b">
-              <th className="px-6 py-4 text-left">#</th>
-              <th className="px-6 py-4 text-left">DR</th>
-              <th className="px-6 py-4 text-left">Description</th>
-              <th className="px-6 py-4 text-left">Unit Cost</th>
-              <th className="px-6 py-4 text-left">Quantity</th>
-              <th className="px-6 py-4 text-left">Amount</th>
-              <th className="px-6 py-4 text-left">Discount</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div className="overflow-x-auto border border-gray-200 rounded-lg mb-8">
+        <Table className="w-full">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">#</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">DR</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Description</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Unit Cost</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Quantity</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Amount</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Discount</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {orders.filter(o =>
               o.dr.includes(search) ||
               o.description.toLowerCase().includes(search.toLowerCase())
             ).map((order, idx) => (
-              <tr key={order.dr} className="border-b hover:bg-gray-50">
-                <td className="px-6 py-3 font-bold">{idx + 1}</td>
-                <td className="px-6 py-3">{order.dr}</td>
-                <td className="px-6 py-3">{order.description}</td>
-                <td className="px-6 py-3">{order.unitCost}</td>
-                <td className="px-6 py-3">{order.quantity}</td>
-                <td className="px-6 py-3">{order.amount.toFixed(2)}</td>
-                <td className="px-6 py-3">{order.discount.toFixed(2)}</td>
-              </tr>
+              <TableRow key={order.dr} className="hover:bg-gray-50">
+                <TableCell className="px-6 py-4 text-sm text-gray-900 font-bold">{idx + 1}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{order.dr}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{order.description}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{order.unitCost}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{order.quantity}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{order.amount.toFixed(2)}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{order.discount.toFixed(2)}</TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
   
       <div className="flex flex-wrap flex-col md:flex-row md:items-center md:justify-between gap-6 mt-8">

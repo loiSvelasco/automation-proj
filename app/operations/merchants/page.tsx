@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Search, Edit, Trash2, Plus, List } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table"
 
 // Mock data for merchants
 const mockMerchants = [
@@ -57,25 +58,25 @@ export default function RegisteredMerchants() {
       </div>
 
       {/* Table */}
-      <div className="border border-gray-200 rounded-lg overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
-            <tr>
-              <th className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-16">#</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Code</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Description</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Category</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-24">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+      <div className="border border-gray-200 rounded-lg overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-16">#</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Code</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Description</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Category</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-24">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {mockMerchants.map((merchant) => (
-              <tr key={merchant.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 text-sm text-gray-900">{merchant.id}</td>
-                <td className="px-6 py-4 text-sm text-gray-900">{merchant.code}</td>
-                <td className="px-6 py-4 text-sm text-gray-900">{merchant.description}</td>
-                <td className="px-6 py-4 text-sm text-gray-900">{merchant.category}</td>
-                <td className="px-6 py-4">
+              <TableRow key={merchant.id} className="hover:bg-gray-50">
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{merchant.id}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{merchant.code}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{merchant.description}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{merchant.category}</TableCell>
+                <TableCell className="px-6 py-4">
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleEdit(merchant.id)}
@@ -90,23 +91,23 @@ export default function RegisteredMerchants() {
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
             {/* Placeholder row */}
-            <tr className="hover:bg-gray-50">
-              <td className="px-6 py-4 text-sm text-gray-400">4</td>
-              <td className="px-6 py-4 text-sm text-gray-400">Placeholder</td>
-              <td className="px-6 py-4 text-sm text-gray-400">Placeholder</td>
-              <td className="px-6 py-4 text-sm text-gray-400">Placeholder</td>
-              <td className="px-6 py-4">
+            <TableRow className="hover:bg-gray-50">
+              <TableCell className="px-6 py-4 text-sm text-gray-400">4</TableCell>
+              <TableCell className="px-6 py-4 text-sm text-gray-400">Placeholder</TableCell>
+              <TableCell className="px-6 py-4 text-sm text-gray-400">Placeholder</TableCell>
+              <TableCell className="px-6 py-4 text-sm text-gray-400">Placeholder</TableCell>
+              <TableCell className="px-6 py-4">
                 <button onClick={handleAdd} className="text-gray-600 hover:text-gray-900 transition-colors">
                   <Plus className="w-4 h-4" />
                 </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </div>
 
       {/* Bottom Section */}
