@@ -42,7 +42,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="#">Operations</Link>
+                <Link href="/operations">Operations</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
@@ -73,32 +73,37 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/dashboard/merchants">Merchants</Link>
+                <Link href="/operations/merchants">Merchants</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/dashboard/products">Products</Link>
+                <Link href="/operations/products">Products</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/dashboard/profits">Profit</Link>
+                <Link href="#">Price Adjustments</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/dashboard/loss">Loss</Link>
+                <Link href="#">Expenses</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/dashboard/collections">Collection</Link>
+                <Link href="#">Employees</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/dashboard/expenses">Expenses</Link>
+                <Link href="#">Suppliers</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                <Link href="#">Deliveries</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
