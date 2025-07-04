@@ -52,7 +52,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="#">Backup/Restore</Link>
+                <Link href="#">System</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
