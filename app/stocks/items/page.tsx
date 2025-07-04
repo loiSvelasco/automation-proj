@@ -7,9 +7,9 @@ import { Input } from "@/components/ui/input"
 
 // Mock data for merchants
 const mockItems = [
-  { id: 1, code: "000001", description: "Belly", category: "Fast" },
-  { id: 2, code: "000002", description: "Head", category: "Slow" },
-  { id: 3, code: "000003", description: "Loin", category: "Fast" },
+  { id: 1, code: "000001", description: "Belly", category: "Fast", reorderLevels: "[100, 20]kls" },
+  { id: 2, code: "000002", description: "Head", category: "Slow", reorderLevels: "[100, 5]kls" },
+  { id: 3, code: "000003", description: "Loin", category: "Fast", reorderLevels: "[100, 4]kls" },
 ]
 
 export default function RegisteredMerchants() {
@@ -62,6 +62,7 @@ export default function RegisteredMerchants() {
               <th className="px-4 py-2 text-left font-medium text-gray-900">Code</th>
               <th className="px-4 py-2 text-left font-medium text-gray-900">Description</th>
               <th className="px-4 py-2 text-left font-medium text-gray-900">Category</th>
+              <th className="px-4 py-2 text-left font-medium text-gray-900">Reorder Levels</th>
               <th className="px-4 py-2 text-left font-medium text-gray-900 w-24">Actions</th>
             </tr>
           </thead>
@@ -72,6 +73,7 @@ export default function RegisteredMerchants() {
                 <td className="px-4 py-2">{item.code}</td>
                 <td className="px-4 py-2">{item.description}</td>
                 <td className="px-4 py-2">{item.category}</td>
+                <td className="px-4 py-2">{item.reorderLevels}</td>
                 <td className="px-4 py-2">
                   <div className="flex gap-2">
                     <button onClick={() => handleEdit(item.id)} className="text-gray-600 hover:text-gray-900">
@@ -87,6 +89,7 @@ export default function RegisteredMerchants() {
 
             <tr className="hover:bg-gray-50">
               <td className="px-4 py-2 text-gray-400">4</td>
+              <td className="px-4 py-2 text-gray-400">Placeholder</td>
               <td className="px-4 py-2 text-gray-400">Placeholder</td>
               <td className="px-4 py-2 text-gray-400">Placeholder</td>
               <td className="px-4 py-2 text-gray-400">Placeholder</td>

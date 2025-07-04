@@ -154,7 +154,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="w-full max-w-7xl py-4 sm:py-8">{children}</div>
       </main>
       
-      <footer className="p-4 text-sm text-gray-600 flex flex-col items-center gap-2">
+      <footer className="p-4 text-sm text-gray-600 flex flex-col items-center gap-2 border-t">
       {pathname !== '/stocks' && (
 
         <NavigationMenu>
@@ -192,7 +192,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 asChild
                 className={navigationMenuTriggerStyle()}
               >
-                <Link href="/stocks/receiving">Inventory</Link>
+                <Link href="/stocks/inventory">Inventory</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
 

@@ -284,9 +284,8 @@ export default function LandingPage() {
         </div>
       </main>
 
-      <footer className="p-4 text-sm text-gray-600 flex flex-col items-center">
-        {/* comment out in case needed */}
-        {/* <NavigationMenu>
+      <footer className="p-4 text-sm text-gray-600 flex flex-col items-center border-t">
+        <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuLink
@@ -342,7 +341,7 @@ export default function LandingPage() {
               </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
-        </NavigationMenu> */}
+        </NavigationMenu>
         <div className="mt-2 text-center">
           © 2025 3S and R Frozen Meat Trading Inc.
         </div>

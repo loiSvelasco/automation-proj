@@ -56,6 +56,7 @@ export default function Stocks() {
         ))}
       </div>
 
+      {/* carousel page */}
       {/* <div className="flex justify-center mt-8 gap-2">
         {data.map((_, idx) => (
           <div key={idx} className="w-3 h-3 rounded-full bg-gray-500" />
