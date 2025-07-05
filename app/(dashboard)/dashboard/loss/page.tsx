@@ -1,194 +1,257 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
-import { Home as HomeIcon, TrendingDown, Percent } from "lucide-react";
-import Header from "@/components/ui/header";
-import Footer from "@/components/ui/footer";
-import * as React from "react";
-import Link from "next/link";
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-import Image from "next/image";
+"use client"
 
-function AreaChartPlaceholder({ label, className }: { label?: string; className?: string }) {
-  return (
-    <div className={cn("flex flex-col items-center", className)}>
-      <svg viewBox="0 0 200 60" className="w-full h-20">
-        <polygon points="0,50 20,40 40,45 60,30 80,35 100,20 120,25 140,10 160,20 180,10 200,30 200,60 0,60" fill="#f87171" opacity="0.15" />
-        <polyline points="0,50 20,40 40,45 60,30 80,35 100,20 120,25 140,10 160,20 180,10 200,30" fill="none" stroke="#f87171" strokeWidth="2" />
-      </svg>
-      {label && <span className="text-gray-500 text-xs mt-1">{label}</span>}
-    </div>
-  );
+import { useState, useEffect } from "react"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { Area, AreaChart, Line, LineChart, XAxis, YAxis, CartesianGrid, Legend } from "recharts"
+import Footer from "@/components/ui/footer"
+
+const chartConfig = {
+  spoilage: {
+    label: "Spoilage",
+    color: "#F87171", // Red
+  },
+  returns: {
+    label: "Returns", 
+    color: "#FBBF24", // Yellow
+  },
+  damages: {
+    label: "Damages",
+    color: "#60A5FA", // Blue
+  },
+  theft: {
+    label: "Theft",
+    color: "#F472B6", // Pink
+  },
 }
 
-function BarChartWithLabels({ bars, months, label }: { bars: number[]; months: string[]; label?: string }) {
-  return (
-    <div className="w-full flex flex-col items-center">
-      <div className="flex w-full items-end justify-between h-24">
-        {bars.map((h, i) => (
-          <div key={i} className="flex flex-col items-center w-6">
-            <div style={{ height: `${h}px` }} className="w-4 bg-red-400 rounded-t" />
-          </div>
-        ))}
-      </div>
-      <div className="flex w-full justify-between text-gray-500 text-xs mt-1 px-1">
-        {months.map((m, i) => (
-          <span key={i} className="w-6 text-center">{m}</span>
-        ))}
-      </div>
-      {label && <span className="text-gray-500 text-xs mt-2">{label}</span>}
-    </div>
-  );
-}
+export default function LossDashboard() {
+  // Filters
+  const [filters, setFilters] = useState({
+    spoilage: true,
+    returns: false,
+    damages: false,
+    theft: false,
+    majorOnly: false,
+  })
 
-const topLosses = [
-  { name: "Spoilage", amount: "$800" },
-  { name: "Returns", amount: "$1,100" },
-  { name: "Damages", amount: "$950" },
-];
-const recentLosses = [
-  { id: "LOS-001", date: "2024-06-01", amount: "-$300", desc: "Spoiled Goods" },
-  { id: "LOS-002", date: "2024-06-02", amount: "-$400", desc: "Returned Items" },
-  { id: "LOS-003", date: "2024-06-03", amount: "-$250", desc: "Damaged Stock" },
-  { id: "LOS-004", date: "2024-06-04", amount: "-$200", desc: "Lost Inventory" },
-];
-const monthsArr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const barHeights = [20, 35, 15, 40, 30, 60, 25, 50, 35, 45, 25, 70];
+  // Big numbers
+  const [totalLosses, setTotalLosses] = useState<number | null>(null)
+  const [lossRatio, setLossRatio] = useState<number | null>(null)
 
-export default function DashboardLossPage() {
+  // Chart data
+  const [areaChartData, setAreaChartData] = useState<any[]>([])
+  const [lineChartData, setLineChartData] = useState<any[]>([])
+  const [dualLineChartData, setDualLineChartData] = useState<any[]>([])
+
+  // Loading state
+  const [loading, setLoading] = useState(true)
+
+  // Placeholder for API fetch
+  useEffect(() => {
+    setLoading(true)
+    // Simulate API fetch
+    setTimeout(() => {
+      setTotalLosses(6200)
+      setLossRatio(7.8)
+      setAreaChartData([
+        { month: "January", spoilage: 800, returns: 1100 },
+        { month: "February", spoilage: 750, returns: 1200 },
+        { month: "March", spoilage: 850, returns: 1050 },
+        { month: "April", spoilage: 700, returns: 1150 },
+        { month: "May", spoilage: 900, returns: 1250 },
+        { month: "June", spoilage: 800, returns: 1100 },
+        { month: "July", spoilage: 850, returns: 1300 },
+        { month: "August", spoilage: 750, returns: 1000 },
+      ])
+      setLineChartData([
+        { month: "Jan", value: 1900 },
+        { month: "Feb", value: 1950 },
+        { month: "Mar", value: 1900 },
+        { month: "Apr", value: 1850 },
+        { month: "May", value: 2150 },
+        { month: "Jun", value: 1900 },
+        { month: "Jul", value: 2150 },
+        { month: "Aug", value: 1750 },
+      ])
+      setDualLineChartData([
+        { month: "Jan", losses: 1900, inventory: 25000 },
+        { month: "Feb", losses: 1950, inventory: 25500 },
+        { month: "Mar", losses: 1900, inventory: 26000 },
+        { month: "Apr", losses: 1850, inventory: 25200 },
+        { month: "May", losses: 2150, inventory: 27000 },
+        { month: "Jun", losses: 1900, inventory: 26500 },
+        { month: "Jul", losses: 2150, inventory: 28000 },
+        { month: "Aug", losses: 1750, inventory: 25000 },
+      ])
+      setLoading(false)
+    }, 800)
+  }, [])
+
+  const handleFilterChange = (filterId: string, checked: boolean) => {
+    setFilters((prev) => ({ ...prev, [filterId]: checked }))
+  }
+
+  // Custom dot for conditional styling in line chart
+  const CustomDot = (props: any) => {
+    const { cx, cy, value, index } = props;
+    const key = `dot-${index}-${value}`;
+    if (typeof value !== "number" || cx == null || cy == null) {
+      return <circle key={key} cx={cx ?? 0} cy={cy ?? 0} r={2} fill="#F87171" stroke="#F87171" strokeWidth={1} />;
+    }
+    if (value > 2000) {
+      return <circle key={key} cx={cx} cy={cy} r={6} fill="#F87171" stroke="#F87171" strokeWidth={2} />;
+    }
+    return <circle key={key} cx={cx} cy={cy} r={4} fill="#FBBF24" stroke="#FBBF24" strokeWidth={1} />;
+  };
+
   return (
-    <>
-      <div className="max-w-7xl mx-auto w-full px-2 sm:px-4 mt-6 mb-4">
-        <Card className="bg-white border-gray-200 p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 shadow-sm">
-          <div className="flex flex-wrap gap-2 items-center">
-            <span className="font-medium text-gray-700 text-sm">Filters</span>
-            <Label className="flex items-center gap-1 text-gray-600 text-xs">
-              <Input type="checkbox" className="mr-1 h-3 w-3" /> Last 30 days
-            </Label>
-            <Label className="flex items-center gap-1 text-gray-600 text-xs">
-              <Input type="checkbox" className="mr-1 h-3 w-3" /> This year
-            </Label>
-            <Label className="flex items-center gap-1 text-gray-600 text-xs">
-              <Input type="checkbox" className="mr-1 h-3 w-3" defaultChecked /> Major only
-            </Label>
+    <div className="min-h-screen flex flex-col bg-white">
+      <div className="flex-1 max-w-7xl w-full mx-auto px-2 sm:px-4 py-6">
+        {/* Responsive 4-grid layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          {/* Top Left: Filters + Big Numbers */}
+          <div className="flex flex-col gap-6 bg-white rounded-lg border border-gray-200 p-6 h-full">
+            {/* Filters */}
+            <div className="mb-4">
+              <div className="flex flex-wrap items-center gap-4">
+                <span className="text-gray-700 font-medium">Filters</span>
+                <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="spoilage"
+                      checked={filters.spoilage}
+                      onCheckedChange={(checked) => handleFilterChange("spoilage", checked as boolean)}
+                    />
+                    <label htmlFor="spoilage" className={`text-sm font-medium ${filters.spoilage ? "text-gray-900" : "text-gray-400"}`}>Spoilage</label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="returns"
+                      checked={filters.returns}
+                      onCheckedChange={(checked) => handleFilterChange("returns", checked as boolean)}
+                    />
+                    <label htmlFor="returns" className={`text-sm font-medium ${filters.returns ? "text-gray-900" : "text-gray-400"}`}>Returns</label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="damages"
+                      checked={filters.damages}
+                      onCheckedChange={(checked) => handleFilterChange("damages", checked as boolean)}
+                    />
+                    <label htmlFor="damages" className={`text-sm font-medium ${filters.damages ? "text-gray-900" : "text-gray-400"}`}>Damages</label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="theft"
+                      checked={filters.theft}
+                      onCheckedChange={(checked) => handleFilterChange("theft", checked as boolean)}
+                    />
+                    <label htmlFor="theft" className={`text-sm font-medium ${filters.theft ? "text-gray-900" : "text-gray-400"}`}>Theft</label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="majorOnly"
+                      checked={filters.majorOnly}
+                      onCheckedChange={(checked) => handleFilterChange("majorOnly", checked as boolean)}
+                    />
+                    <label htmlFor="majorOnly" className={`text-sm font-medium ${filters.majorOnly ? "text-gray-900" : "text-gray-400"}`}>Major Only</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Big Numbers */}
+            <div className="flex flex-row gap-8 justify-between items-center">
+              <div className="flex flex-col items-center flex-1">
+                <h2 className="text-lg font-medium text-gray-700 mb-1">Total Losses</h2>
+                <div className="text-5xl md:text-7xl font-bold text-gray-900 leading-none">
+                  {loading ? "--" : `$${(totalLosses || 0).toLocaleString()}`}
+                </div>
+              </div>
+              <div className="flex flex-col items-center flex-1">
+                <h2 className="text-lg font-medium text-gray-700 mb-1">Loss Ratio</h2>
+                <div className="text-5xl md:text-7xl font-bold text-gray-900 leading-none">
+                  {loading ? "--" : `${lossRatio}%`}
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex justify-end w-full md:w-auto">
-            <Button size="sm" className="h-7 px-3 text-xs">Apply</Button>
-          </div>
-        </Card>
-      </div>
-      <div className="flex-1 w-full max-w-7xl mx-auto px-2 sm:px-4 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 mt-8">
-          {/* Total Losses */}
-          <Card className="bg-white text-gray-900 border-gray-200 flex flex-col justify-between min-h-[220px] col-span-1 shadow-sm">
-            <CardHeader className="flex flex-row items-center gap-3 pb-2">
-              <TrendingDown className="w-7 h-7 text-yellow-500" />
-              <div>
-                <CardDescription className="text-gray-500">Total Losses</CardDescription>
-                <CardTitle className="text-3xl">$6,200</CardTitle>
+          {/* Top Right: Area Chart */}
+          <Card className="border-gray-200 h-full flex flex-col">
+            <CardHeader className="pb-2">
+              <div className="flex items-center justify-end gap-4 text-xs">
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 bg-red-400 rounded"></div>
+                  <span>Spoilage</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 bg-yellow-400 rounded"></div>
+                  <span>Returns</span>
+                </div>
               </div>
             </CardHeader>
-            <CardContent>
-              <span className="text-yellow-600 text-base font-semibold">+3.7% this month</span>
-              <AreaChartPlaceholder className="mt-2" label="Total Losses" />
+            <CardContent className="p-0 flex-1 flex flex-col justify-center">
+              <ChartContainer config={chartConfig} className="h-[260px] w-full">
+                <AreaChart data={areaChartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis domain={['auto', 'auto']} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Area key="area-spoilage" type="monotone" dataKey="spoilage" name="Spoilage Area" stroke="#F87171" fill="#F87171" fillOpacity={0.5} />
+                  <Area key="area-returns" type="monotone" dataKey="returns" name="Returns Area" stroke="#FBBF24" fill="#FBBF24" fillOpacity={0.4} />
+                  <Line key="line-spoilage" type="monotone" dataKey="spoilage" name="Spoilage Line" stroke="#F87171" strokeWidth={2} dot={{ r: 6, fill: '#fff', stroke: '#F87171', strokeWidth: 2 }} />
+                  <Line key="line-returns" type="monotone" dataKey="returns" name="Returns Line" stroke="#FBBF24" strokeWidth={2} dot={{ r: 6, fill: '#fff', stroke: '#FBBF24', strokeWidth: 2 }} />
+                </AreaChart>
+              </ChartContainer>
             </CardContent>
           </Card>
-          {/* Loss Ratio */}
-          <Card className="bg-white text-gray-900 border-gray-200 flex flex-col justify-between min-h-[220px] col-span-1 shadow-sm">
-            <CardHeader className="flex flex-row items-center gap-3 pb-2">
-              <Percent className="w-7 h-7 text-blue-500" />
-              <div>
-                <CardDescription className="text-gray-500">Loss Ratio</CardDescription>
-                <CardTitle className="text-3xl">7.8%</CardTitle>
-              </div>
+          {/* Bottom Left: Line Chart with Conditional Styling */}
+          <Card className="border-gray-200 h-full flex flex-col">
+            <CardHeader className="pb-2">
+              <div className="text-xs text-gray-500">Monthly Losses Trend</div>
             </CardHeader>
-            <CardContent>
-              <span className="text-blue-600 text-base font-semibold">+0.5% from last month</span>
-              <AreaChartPlaceholder className="mt-2" label="Loss Ratio" />
+            <CardContent className="p-0 flex-1 flex flex-col justify-center">
+              <ChartContainer config={chartConfig} className="h-[180px] w-full">
+                <LineChart data={lineChartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#F87171"
+                    strokeWidth={2}
+                    dot={CustomDot}
+                    isAnimationActive={false}
+                  />
+                </LineChart>
+              </ChartContainer>
             </CardContent>
           </Card>
-          {/* Losses Trend Chart */}
-          <Card className="bg-white text-gray-900 border-gray-200 min-h-[260px] col-span-1 md:col-span-2 xl:col-span-1 shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-2xl">Losses Trend</CardTitle>
-              <CardDescription className="text-gray-500">Last 12 months</CardDescription>
+          {/* Bottom Right: Dual Line Chart */}
+          <Card className="border-gray-200 h-full flex flex-col">
+            <CardHeader className="pb-2">
+              <div className="text-xs text-gray-500">Losses vs Inventory</div>
             </CardHeader>
-            <CardContent>
-              <AreaChartPlaceholder label="" />
+            <CardContent className="p-2 flex-1 flex flex-col justify-center">
+              <ChartContainer config={chartConfig} className="h-[180px] w-full">
+                <LineChart data={dualLineChartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Legend />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Line type="monotone" dataKey="losses" stroke="#F87171" strokeWidth={2} dot={false} name="Losses" />
+                  <Line type="monotone" dataKey="inventory" stroke="#60A5FA" strokeWidth={2} dot={false} name="Inventory" />
+                </LineChart>
+              </ChartContainer>
             </CardContent>
           </Card>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-          {/* Losses by Month */}
-          <Card className="bg-white text-gray-900 border-gray-200 min-h-[280px] md:col-span-2 shadow-sm">
-            <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div>
-                <CardTitle className="text-2xl">Losses by Month</CardTitle>
-                <CardDescription className="text-gray-500">2024</CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <BarChartWithLabels bars={barHeights} months={monthsArr} label="Monthly Losses" />
-            </CardContent>
-          </Card>
-          {/* Top Losses */}
-          <Card className="bg-white text-gray-900 border-gray-200 min-h-[220px] shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-2xl">Top Losses</CardTitle>
-              <CardDescription className="text-gray-500">Top 3</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-4">
-                {topLosses.map((p, i) => (
-                  <li key={i} className="flex justify-between items-center">
-                    <span className="font-medium text-gray-800 text-lg">{p.name}</span>
-                    <span className="text-yellow-600 font-semibold text-lg">{p.amount}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-          {/* Recent Losses */}
-          <Card className="bg-white text-gray-900 border-gray-200 min-h-[220px] shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-2xl">Recent Losses</CardTitle>
-              <CardDescription className="text-gray-500">Last 7 Days</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full text-lg">
-                  <thead>
-                    <tr className="text-gray-500">
-                      <th className="text-left font-normal">ID</th>
-                      <th className="text-left font-normal">Date</th>
-                      <th className="text-left font-normal">Description</th>
-                      <th className="text-right font-normal">Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recentLosses.map((txn, i) => (
-                      <tr key={i} className="border-b border-gray-200 last:border-0">
-                        <td>{txn.id}</td>
-                        <td>{txn.date}</td>
-                        <td>{txn.desc}</td>
-                        <td className="text-yellow-600 text-right">{txn.amount}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
-    </>
-  );
+      <Footer />
+    </div>
+  )
 } 

@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Search, Edit, Trash2, Plus, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FaEdit, FaTrash, FaSearch, FaPlus, FaCalendarAlt, FaCheck, FaTimes, FaList, FaExchangeAlt } from "react-icons/fa";
+import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table"
 
 const merchantOptions = [
@@ -23,7 +24,8 @@ export default function OverridePage() {
   const [orders, setOrders] = useState(initialOrders);
   const [merchant, setMerchant] = useState("");
   const [showMerchantDropdown, setShowMerchantDropdown] = useState(false);
-  const [search, setSearch] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<string[]>(["Ribs"]);
 
@@ -33,15 +35,31 @@ export default function OverridePage() {
 
   const amountDue = orders.reduce((sum, o) => sum + o.amount, 0);
 
+  const handleNewOverride = () => {
+    console.log("New Override clicked")
+  }
+
+  const handleEdit = (dr: string) => {
+    console.log("Edit order:", dr)
+  }
+
+  const handleDelete = (dr: string) => {
+    console.log("Delete order:", dr)
+  }
+
+  const handleAdd = () => {
+    console.log("Add new override row")
+  }
+
   return (
-    <div className="w-full max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div className="bg-white">
       {/* Merchant, Load Order, Amount Due */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
         <div className="flex items-center gap-4 flex-1 min-w-[220px] relative">
           <span className="font-medium">Merchant:</span>
           <div className="relative w-full max-w-xs">
-            <input
-              className="border rounded px-3 py-2 text-base w-full"
+            <Input
+              className="w-full"
               placeholder="Type to search..."
               value={merchant}
               onChange={e => {
@@ -72,71 +90,88 @@ export default function OverridePage() {
               </div>
             )}
           </div>
-          <Button className="bg-gray-800 text-white flex gap-2 items-center px-6 py-2 text-base">Load Order</Button>
+          <Button className="bg-gray-800 hover:bg-gray-900 text-white flex gap-2 items-center">Load Order</Button>
         </div>
         <div className="flex flex-col items-end flex-1 min-w-[220px] md:items-end">
           <span className="font-medium text-lg text-gray-600">Amount Due</span>
           <span className="text-3xl font-extrabold text-gray-900">Php {amountDue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
         </div>
       </div>
-      {/* List Icon, Override Title, Search */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-        <div className="flex items-center gap-4">
-          <Button variant="outline" className="rounded-xl border-2 border-gray-200 text-gray-900 font-bold text-lg px-6 py-2 bg-white flex items-center justify-center shadow-none"><FaList className="text-2xl" /></Button>
-          <h1 className="text-3xl font-extrabold text-gray-900">Order Details</h1>
+
+      {/* Header Section */}
+      <div className="flex justify-between items-center mb-8">
+        <div className="flex items-center gap-2">
+          <div className="bg-gray-800 text-white px-2 py-1 rounded text-xs font-medium flex items-center gap-1">
+            <List className="w-3 h-3" />
+            List
+          </div>
+          <h1 className="text-2xl font-semibold text-gray-900">Order Details</h1>
         </div>
-        <div className="flex items-center gap-2 w-full md:w-auto">
-          <span className="inline-flex items-center px-3 py-2 bg-gray-800 text-white rounded-l-md"><FaSearch /></span>
-          <input
-            className="border border-l-0 rounded-r-md px-3 py-2 text-base w-full max-w-xs focus:outline-none"
+
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Input
             placeholder="Search"
-            type="text"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 w-64 border-gray-300 rounded-md"
           />
         </div>
       </div>
+
       {/* Table */}
-      <div className="overflow-x-auto border border-gray-200 rounded-lg mb-8">
-        <Table className="w-full">
+      <div className="overflow-x-auto border border-gray-200 rounded-lg w-full">
+        <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">#</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-16">#</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">DR</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Description</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Unit Cost</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Quantity</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Amount</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Discount</TableHead>
-              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Actions</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-24">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {orders.filter(o =>
-              o.dr.includes(search) ||
-              o.description.toLowerCase().includes(search.toLowerCase())
+              o.dr.includes(searchTerm) ||
+              o.description.toLowerCase().includes(searchTerm.toLowerCase())
             ).map((order, idx) => (
               <TableRow key={order.dr} className="hover:bg-gray-50">
-                <TableCell className="px-6 py-4 text-sm text-gray-900 font-bold">{idx + 1}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{idx + 1}</TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{order.dr}</TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{order.description}</TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{order.unitCost}</TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{order.quantity}</TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{order.amount.toFixed(2)}</TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{order.discount.toFixed(2)}</TableCell>
-                <TableCell className="px-6 py-4 text-sm text-gray-900 flex gap-3">
-                  <button className="text-gray-800 hover:text-blue-600"><FaEdit /></button>
-                  <button className="text-gray-800 hover:text-red-600"><FaTrash /></button>
+                <TableCell className="px-6 py-4">
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleEdit(order.dr)}
+                      className="text-gray-600 hover:text-gray-900 transition-colors"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(order.dr)}
+                      className="text-gray-600 hover:text-red-600 transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
-            {/* Add Item Row */}
-            <TableRow>
+            {/* Placeholder row */}
+            <TableRow className="hover:bg-gray-50">
               <TableCell className="px-6 py-4 text-sm text-gray-400">
-                <input className="border rounded px-2 py-1 w-16 text-sm" placeholder="00" />
+                <Input className="w-16 text-sm" placeholder="00" />
               </TableCell>
               <TableCell className="px-6 py-4 text-sm text-gray-400">
-                <input className="border rounded px-2 py-1 w-24 text-sm" placeholder="Item" />
+                <Input className="w-24 text-sm" placeholder="Item" />
               </TableCell>
               <TableCell className="px-6 py-4 text-sm text-gray-400">
                 <div className="relative">
@@ -152,46 +187,75 @@ export default function OverridePage() {
                             checked={selectedItems.includes(option)}
                             onChange={() => setSelectedItems(sel => sel.includes(option) ? sel.filter(i => i !== option) : [...sel, option])}
                           />
-                          <span className="text-base">{option}</span>
+                          <span className="text-sm">{option}</span>
                         </div>
                       ))}
                       <div className="flex justify-end mt-4">
-                        <Button size="sm" className="bg-gray-900 text-white px-4 py-1" onClick={() => setDropdownOpen(false)}>Close</Button>
+                        <Button size="sm" className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-1" onClick={() => setDropdownOpen(false)}>Close</Button>
                       </div>
                     </div>
                   )}
                 </div>
               </TableCell>
               <TableCell className="px-6 py-4 text-sm text-gray-400">
-                <input className="border rounded px-2 py-1 w-20 text-sm" placeholder="1" />
+                <Input className="w-20 text-sm" placeholder="1" />
               </TableCell>
               <TableCell className="px-6 py-4 text-sm text-gray-400">
-                <input className="border rounded px-2 py-1 w-16 text-sm" placeholder="1" />
+                <Input className="w-16 text-sm" placeholder="1" />
               </TableCell>
               <TableCell className="px-6 py-4 text-sm text-gray-400">
-                <input className="border rounded px-2 py-1 w-16 text-sm" placeholder="0.00" />
+                <Input className="w-16 text-sm" placeholder="0.00" />
               </TableCell>
-              <TableCell className="px-6 py-4 text-sm text-gray-400 flex gap-3 items-center">
-                <button className="text-green-600 text-xl"><FaCheck /></button>
-                <button className="text-red-600 text-xl"><FaTimes /></button>
+              <TableCell className="px-6 py-4 text-sm text-gray-400">
+                <Input className="w-16 text-sm" placeholder="0.00" />
+              </TableCell>
+              <TableCell className="px-6 py-4">
+                <button onClick={handleAdd} className="text-gray-600 hover:text-gray-900 transition-colors">
+                  <Plus className="w-4 h-4" />
+                </button>
               </TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </div>
-      {/* Controls and Pagination on the same line */}
-      <div className="flex flex-wrap flex-col md:flex-row md:items-center md:justify-between gap-6 mt-8">
-        <div className="flex gap-4 flex-wrap">
-          <Button className="bg-gray-900 text-white flex gap-2 items-center px-8 py-3 text-lg"><FaPlus className="text-xl" /> Add Item</Button>
-          <Button className="bg-gray-900 text-white flex gap-2 items-center px-8 py-3 text-lg"><FaCheck className="text-xl" /> Finalize</Button>
-        </div>
-        <div className="flex gap-4 items-center mt-4 md:mt-0">
-          <span className="text-lg">Prev</span>
-          <Button variant="outline" className="px-5 py-2 text-lg">1</Button>
-          <span className="text-lg">2</span>
-          <span className="text-lg">3</span>
-          <span className="text-lg">4</span>
-          <span className="text-lg">Next</span>
+
+      {/* Bottom Section */}
+      <div className="flex justify-between items-center mt-6">
+        <Button
+          onClick={handleNewOverride}
+          className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md flex items-center gap-2"
+        >
+          <Plus className="w-4 h-4" />
+          New Override
+        </Button>
+
+        {/* Pagination */}
+        <div className="flex items-center gap-2">
+          <button
+            className="px-3 py-1 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+          >
+            Prev
+          </button>
+
+          {[1, 2, 3, 4].map((page) => (
+            <button
+              key={page}
+              onClick={() => setCurrentPage(page)}
+              className={`w-8 h-8 text-sm rounded transition-colors ${
+                currentPage === page ? "bg-gray-800 text-white" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+
+          <button
+            className="px-3 py-1 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+            onClick={() => setCurrentPage(Math.min(4, currentPage + 1))}
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>

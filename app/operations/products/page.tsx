@@ -8,11 +8,11 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@
 
 // Mock data for products
 const mockProducts = [
-  { id: 1, code: "PRD001", description: "Chicken Breast", category: "Poultry", stock: "1,200 units" },
-  { id: 2, code: "PRD002", description: "Pork Belly", category: "Pork", stock: "950 units" },
-  { id: 3, code: "PRD003", description: "Beef Steak", category: "Beef", stock: "800 units" },
-  { id: 4, code: "PRD004", description: "Chicken Wings", category: "Poultry", stock: "650 units" },
-  { id: 5, code: "PRD005", description: "Pork Chops", category: "Pork", stock: "750 units" },
+  { id: 1, code: "PRD001", description: "Chicken Breast", short_description: "BRST", unit: "Kilo" },
+  { id: 2, code: "PRD002", description: "Pork Belly", short_description: "BLY", unit: "Kilo" },
+  { id: 3, code: "PRD003", description: "Beef Steak", short_description: "STK", unit: "Kilo" },
+  { id: 4, code: "PRD004", description: "Chicken Wings", short_description: "WNG", unit: "Kilo" },
+  { id: 5, code: "PRD005", description: "Pork Chops", short_description: "CHPS", unit: "Kilo" },
 ]
 
 export default function RegisteredProducts() {
@@ -43,7 +43,7 @@ export default function RegisteredProducts() {
             <List className="w-3 h-3" />
             List
           </div>
-          <h1 className="text-2xl font-semibold text-gray-900">Products</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">Registered Products</h1>
         </div>
 
         <div className="relative">
@@ -65,8 +65,8 @@ export default function RegisteredProducts() {
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-16">#</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Code</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Description</TableHead>
-              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Category</TableHead>
-              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Stock</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Short Description</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Unit</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-24">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -76,8 +76,8 @@ export default function RegisteredProducts() {
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{product.id}</TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{product.code}</TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{product.description}</TableCell>
-                <TableCell className="px-6 py-4 text-sm text-gray-900">{product.category}</TableCell>
-                <TableCell className="px-6 py-4 text-sm text-gray-900">{product.stock}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{product.short_description}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{product.unit}</TableCell>
                 <TableCell className="px-6 py-4">
                   <div className="flex items-center gap-2">
                     <button

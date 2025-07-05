@@ -1,229 +1,257 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { Area, AreaChart, Line, LineChart, XAxis, YAxis, CartesianGrid } from "recharts"
-
-// Data for the top area chart
-const areaChartData = [
-  { month: "January", dataset1: 80, dataset2: 45 },
-  { month: "February", dataset2: 85, dataset1: 30 },
-  { month: "March", dataset1: 35, dataset2: 90 },
-  { month: "April", dataset1: 90, dataset2: 40 },
-  { month: "May", dataset1: 65, dataset2: 75 },
-  { month: "June", dataset1: 95, dataset2: 25 },
-  { month: "July", dataset1: 40, dataset2: 85 },
-  { month: "August", dataset1: 75, dataset2: 60 },
-]
-
-// Data for bottom left declining chart
-const declineChartData = [
-  { month: "January", value: 65 },
-  { month: "February", value: 62 },
-  { month: "March", value: 58 },
-  { month: "April", value: 54 },
-  { month: "May", value: 50 },
-  { month: "June", value: 46 },
-  { month: "July", value: 42 },
-]
-
-// Data for bottom right complex chart
-const complexChartData = [
-  { x: 0, blue: 100, pink: 95 },
-  { x: 100, blue: 85, pink: 110 },
-  { x: 200, blue: 120, pink: 125 },
-  { x: 300, blue: 95, pink: 140 },
-  { x: 400, blue: 140, pink: 155 },
-  { x: 500, blue: 180, pink: 170 },
-  { x: 600, blue: 215, pink: 185 },
-  { x: 700, blue: 250, pink: 200 },
-  { x: 800, blue: 220, pink: 180 },
-  { x: 900, blue: 190, pink: 160 },
-  { x: 1000, blue: 160, pink: 150 },
-]
+import { Area, AreaChart, Line, LineChart, XAxis, YAxis, CartesianGrid, Legend } from "recharts"
+import Footer from "@/components/ui/footer"
 
 const chartConfig = {
-  dataset1: {
-    label: "Dataset 1",
-    color: "#F472B6", // Pink
-  },
-  dataset2: {
-    label: "Dataset 2",
+  active: {
+    label: "Active Merchants",
     color: "#60A5FA", // Blue
   },
-  value: {
-    label: "My First Dataset",
-    color: "#EF4444", // Red
+  inactive: {
+    label: "Inactive Merchants",
+    color: "#F472B6", // Pink
   },
-  blue: {
-    label: "Blue Line",
-    color: "#60A5FA",
+  sales: {
+    label: "Sales",
+    color: "#34D399", // Green
   },
-  pink: {
-    label: "Pink Line",
-    color: "#F472B6",
+  registrations: {
+    label: "Registrations",
+    color: "#FBBF24", // Yellow
   },
 }
 
 export default function MerchantDashboard() {
+  // Filters
   const [filters, setFilters] = useState({
-    filter1: false,
-    filter2: false,
-    filter3: true,
-    filter4: true,
-    filter5: false,
+    active: true,
+    inactive: false,
+    new: false,
+    topRated: false,
+    withIssues: false,
   })
+
+  // Big numbers
+  const [merchantsCount, setMerchantsCount] = useState<number | null>(null)
+  const [coverageCount, setCoverageCount] = useState<number | null>(null)
+
+  // Chart data
+  const [areaChartData, setAreaChartData] = useState<any[]>([])
+  const [lineChartData, setLineChartData] = useState<any[]>([])
+  const [dualLineChartData, setDualLineChartData] = useState<any[]>([])
+
+  // Loading state
+  const [loading, setLoading] = useState(true)
+
+  // Placeholder for API fetch
+  useEffect(() => {
+    setLoading(true)
+    // Simulate API fetch
+    setTimeout(() => {
+      setMerchantsCount(121)
+      setCoverageCount(50)
+      setAreaChartData([
+        { month: "January", active: 80, inactive: -40 },
+        { month: "February", active: 90, inactive: 80 },
+        { month: "March", active: 40, inactive: -70 },
+        { month: "April", active: 85, inactive: 60 },
+        { month: "May", active: -10, inactive: 40 },
+        { month: "June", active: 90, inactive: -60 },
+        { month: "July", active: -30, inactive: -80 },
+        { month: "August", active: 40, inactive: 20 },
+      ])
+      setLineChartData([
+        { month: "Jan", value: 60 },
+        { month: "Feb", value: 62 },
+        { month: "Mar", value: 58 },
+        { month: "Apr", value: 54 },
+        { month: "May", value: 50 },
+        { month: "Jun", value: 46 },
+        { month: "Jul", value: 42 },
+        { month: "Aug", value: 55 },
+      ])
+      setDualLineChartData([
+        { month: "Jan", sales: 100, registrations: 30 },
+        { month: "Feb", sales: 120, registrations: 40 },
+        { month: "Mar", sales: 110, registrations: 35 },
+        { month: "Apr", sales: 130, registrations: 50 },
+        { month: "May", sales: 140, registrations: 60 },
+        { month: "Jun", sales: 150, registrations: 70 },
+        { month: "Jul", sales: 160, registrations: 80 },
+        { month: "Aug", sales: 170, registrations: 90 },
+      ])
+      setLoading(false)
+    }, 800)
+  }, [])
 
   const handleFilterChange = (filterId: string, checked: boolean) => {
     setFilters((prev) => ({ ...prev, [filterId]: checked }))
   }
 
+  // Custom dot for conditional styling in line chart
+  const CustomDot = (props: any) => {
+    const { cx, cy, value } = props;
+    if (typeof value !== "number" || cx == null || cy == null) {
+      // Always return a valid SVG element
+      return <circle cx={cx ?? 0} cy={cy ?? 0} r={2} fill="#34D399" stroke="#34D399" strokeWidth={1} />;
+    }
+    if (value < 50) {
+      return <circle cx={cx} cy={cy} r={6} fill="#F87171" stroke="#F87171" strokeWidth={2} />;
+    }
+    return <circle cx={cx} cy={cy} r={4} fill="#34D399" stroke="#34D399" strokeWidth={1} />;
+  };
+
   return (
-    <div className="p-6 bg-white min-h-screen">
-      {/* Filters Section */}
-      <div className="mb-8">
-        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-          <div className="flex items-center gap-8">
-            <span className="text-gray-700 font-medium">Filters</span>
-            <div className="flex items-center gap-6">
-              {Object.entries(filters).map(([key, checked]) => (
-                <div key={key} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={key}
-                    checked={checked}
-                    onCheckedChange={(checked) => handleFilterChange(key, checked as boolean)}
-                  />
-                  <label
-                    htmlFor={key}
-                    className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
-                      checked ? "text-gray-900" : "text-gray-400"
-                    }`}
-                  >
-                    Label
-                  </label>
+    <div className="min-h-screen flex flex-col bg-white">
+      <div className="flex-1 max-w-7xl w-full mx-auto px-2 sm:px-4 py-6">
+        {/* Responsive 4-grid layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          {/* Top Left: Filters + Big Numbers */}
+          <div className="flex flex-col gap-6 bg-white rounded-lg border border-gray-200 p-6 h-full">
+            {/* Filters */}
+            <div className="mb-4">
+              <div className="flex flex-wrap items-center gap-4">
+                <span className="text-gray-700 font-medium">Filters</span>
+                <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="active"
+                      checked={filters.active}
+                      onCheckedChange={(checked) => handleFilterChange("active", checked as boolean)}
+                    />
+                    <label htmlFor="active" className={`text-sm font-medium ${filters.active ? "text-gray-900" : "text-gray-400"}`}>Active</label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="inactive"
+                      checked={filters.inactive}
+                      onCheckedChange={(checked) => handleFilterChange("inactive", checked as boolean)}
+                    />
+                    <label htmlFor="inactive" className={`text-sm font-medium ${filters.inactive ? "text-gray-900" : "text-gray-400"}`}>Inactive</label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="new"
+                      checked={filters.new}
+                      onCheckedChange={(checked) => handleFilterChange("new", checked as boolean)}
+                    />
+                    <label htmlFor="new" className={`text-sm font-medium ${filters.new ? "text-gray-900" : "text-gray-400"}`}>New</label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="topRated"
+                      checked={filters.topRated}
+                      onCheckedChange={(checked) => handleFilterChange("topRated", checked as boolean)}
+                    />
+                    <label htmlFor="topRated" className={`text-sm font-medium ${filters.topRated ? "text-gray-900" : "text-gray-400"}`}>Top Rated</label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="withIssues"
+                      checked={filters.withIssues}
+                      onCheckedChange={(checked) => handleFilterChange("withIssues", checked as boolean)}
+                    />
+                    <label htmlFor="withIssues" className={`text-sm font-medium ${filters.withIssues ? "text-gray-900" : "text-gray-400"}`}>With Issues</label>
+                  </div>
                 </div>
-              ))}
+              </div>
+            </div>
+            {/* Big Numbers */}
+            <div className="flex flex-row gap-8 justify-between items-center">
+              <div className="flex flex-col items-center flex-1">
+                <h2 className="text-lg font-medium text-gray-700 mb-1">Merchants</h2>
+                <div className="text-5xl md:text-7xl font-bold text-gray-900 leading-none">
+                  {loading ? "--" : merchantsCount}
+                </div>
+              </div>
+              <div className="flex flex-col items-center flex-1">
+                <h2 className="text-lg font-medium text-gray-700 mb-1">Coverage</h2>
+                <div className="text-5xl md:text-7xl font-bold text-gray-900 leading-none">
+                  {loading ? "--" : coverageCount}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Main Dashboard Content */}
-      <div className="grid grid-cols-12 gap-6 h-[600px]">
-        {/* Left Side - Metrics */}
-        <div className="col-span-3 space-y-12">
-          <div>
-            <h2 className="text-2xl font-medium text-gray-700 mb-4">Merchants</h2>
-            <div className="text-8xl font-bold text-gray-900 leading-none">121</div>
-          </div>
-          <div>
-            <h2 className="text-2xl font-medium text-gray-700 mb-4">Coverage</h2>
-            <div className="text-8xl font-bold text-gray-900 leading-none">50</div>
-          </div>
-        </div>
-
-        {/* Right Side - Charts */}
-        <div className="col-span-9 grid grid-rows-2 gap-6">
-          {/* Top Chart - Area Chart */}
-          <Card className="border-gray-200">
+          {/* Top Right: Area Chart */}
+          <Card className="border-gray-200 h-full flex flex-col">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-end gap-4 text-xs">
                 <div className="flex items-center gap-1">
-                  <div className="w-3 h-3 bg-pink-400 rounded"></div>
-                  <span>Dataset 1</span>
+                  <div className="w-3 h-3 bg-blue-400 rounded"></div>
+                  <span>Active</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <div className="w-3 h-3 bg-blue-400 rounded"></div>
-                  <span>Dataset 2</span>
+                  <div className="w-3 h-3 bg-pink-400 rounded"></div>
+                  <span>Inactive</span>
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="p-0">
-              <ChartContainer config={chartConfig} className="h-[250px] w-full">
-                <AreaChart data={areaChartData}>
+            <CardContent className="p-0 flex-1 flex flex-col justify-center">
+              <ChartContainer config={chartConfig} className="h-[260px] w-full">
+                <AreaChart data={areaChartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis
-                    dataKey="month"
-                    tickFormatter={(value) => value.slice(0, 3)}
-                    angle={-45}
-                    textAnchor="end"
-                    height={60}
-                  />
-                  <YAxis />
+                  <XAxis dataKey="month" />
+                  <YAxis domain={['auto', 'auto']} />
                   <ChartTooltip content={<ChartTooltipContent />} />
-                  <Area
-                    type="monotone"
-                    dataKey="dataset1"
-                    stackId="1"
-                    stroke="#F472B6"
-                    fill="#F472B6"
-                    fillOpacity={0.6}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="dataset2"
-                    stackId="1"
-                    stroke="#60A5FA"
-                    fill="#60A5FA"
-                    fillOpacity={0.6}
-                  />
+                  <Area key="area-active" type="monotone" dataKey="active" name="Active Area" stroke="#ff6384" fill="#ff6384" fillOpacity={0.5} />
+                  <Area key="area-inactive" type="monotone" dataKey="inactive" name="Inactive Area" stroke="#36a2eb" fill="#36a2eb" fillOpacity={0.4} />
+                  <Line key="line-active" type="monotone" dataKey="active" name="Active Line" stroke="#ff6384" strokeWidth={2} dot={{ r: 6, fill: '#fff', stroke: '#ff6384', strokeWidth: 2 }} />
+                  <Line key="line-inactive" type="monotone" dataKey="inactive" name="Inactive Line" stroke="#36a2eb" strokeWidth={2} dot={{ r: 6, fill: '#fff', stroke: '#36a2eb', strokeWidth: 2 }} />
                 </AreaChart>
               </ChartContainer>
             </CardContent>
           </Card>
-
-          {/* Bottom Charts Row */}
-          <div className="grid grid-cols-2 gap-6">
-            {/* Bottom Left Chart - Declining Line */}
-            <Card className="border-gray-200">
-              <CardHeader className="pb-2">
-                <div className="text-xs text-gray-500">My First Dataset</div>
-              </CardHeader>
-              <CardContent className="p-0">
-                <ChartContainer config={chartConfig} className="h-[200px] w-full">
-                  <LineChart data={declineChartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis
-                      dataKey="month"
-                      tickFormatter={(value) => value.slice(0, 3)}
-                      angle={-45}
-                      textAnchor="end"
-                      height={40}
-                    />
-                    <YAxis />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Line
-                      type="monotone"
-                      dataKey="value"
-                      stroke="#EF4444"
-                      strokeWidth={2}
-                      dot={{ fill: "#EF4444", strokeWidth: 2, r: 4 }}
-                    />
-                  </LineChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
-
-            {/* Bottom Right Chart - Complex Lines */}
-            <Card className="border-gray-200">
-              <CardContent className="p-2">
-                <ChartContainer config={chartConfig} className="h-[220px] w-full">
-                  <LineChart data={complexChartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="x" />
-                    <YAxis domain={[50, 300]} />
-                    <ChartTooltip content={<ChartTooltipContent />} labelFormatter={(value) => `X: ${value}`} />
-                    <Line type="monotone" dataKey="blue" stroke="#60A5FA" strokeWidth={2} dot={false} />
-                    <Line type="monotone" dataKey="pink" stroke="#F472B6" strokeWidth={2} dot={false} />
-                  </LineChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
-          </div>
+          {/* Bottom Left: Line Chart with Conditional Styling */}
+          <Card className="border-gray-200 h-full flex flex-col">
+            <CardHeader className="pb-2">
+              <div className="text-xs text-gray-500">Merchant Activity Trend</div>
+            </CardHeader>
+            <CardContent className="p-0 flex-1 flex flex-col justify-center">
+              <ChartContainer config={chartConfig} className="h-[180px] w-full">
+                <LineChart data={lineChartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#34D399"
+                    strokeWidth={2}
+                    dot={CustomDot}
+                    isAnimationActive={false}
+                  />
+                </LineChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+          {/* Bottom Right: Dual Line Chart */}
+          <Card className="border-gray-200 h-full flex flex-col">
+            <CardHeader className="pb-2">
+              <div className="text-xs text-gray-500">Sales vs Registrations</div>
+            </CardHeader>
+            <CardContent className="p-2 flex-1 flex flex-col justify-center">
+              <ChartContainer config={chartConfig} className="h-[180px] w-full">
+                <LineChart data={dualLineChartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Legend />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Line type="monotone" dataKey="sales" stroke="#34D399" strokeWidth={2} dot={false} name="Sales" />
+                  <Line type="monotone" dataKey="registrations" stroke="#FBBF24" strokeWidth={2} dot={false} name="Registrations" />
+                </LineChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }
