@@ -99,15 +99,15 @@ export default function PriceAdjustmentsPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-8">#</TableHead>
-                <TableHead>DR</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Actual Weight</TableHead>
-                <TableHead>Unit Cost</TableHead>
-                <TableHead>Sold</TableHead>
-                <TableHead>Retail Price</TableHead>
-                <TableHead>Profit Margin</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-16">#</TableHead>
+                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">DR</TableHead>
+                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Description</TableHead>
+                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Actual Weight</TableHead>
+                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Unit Cost</TableHead>
+                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Sold</TableHead>
+                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Retail Price</TableHead>
+                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Profit Margin</TableHead>
+                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -115,16 +115,18 @@ export default function PriceAdjustmentsPage() {
                 item.dr.includes(search) ||
                 item.description.toLowerCase().includes(search.toLowerCase())
               ).map((item, idx) => (
-                <TableRow key={item.id}>
-                  <TableCell>{(page - 1) * itemsPerPage + idx + 1}</TableCell>
-                  <TableCell>{item.dr}</TableCell>
-                  <TableCell>{item.description}</TableCell>
-                  <TableCell>{item.actualWeight}</TableCell>
-                  <TableCell>{item.unitCost.toFixed(2)}</TableCell>
-                  <TableCell>{item.sold}</TableCell>
-                  <TableCell>{item.retailPrice.toFixed(2)}</TableCell>
-                  <TableCell>{item.profitMargin.toFixed(2)}</TableCell>
-                  <TableCell><Pencil className="w-4 h-4 text-gray-500 cursor-pointer" /></TableCell>
+                <TableRow key={item.id} className="hover:bg-gray-50">
+                  <TableCell className="px-6 py-4 text-sm text-gray-900">{(page - 1) * itemsPerPage + idx + 1}</TableCell>
+                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.dr}</TableCell>
+                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.description}</TableCell>
+                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.actualWeight}</TableCell>
+                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.unitCost.toFixed(2)}</TableCell>
+                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.sold}</TableCell>
+                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.retailPrice.toFixed(2)}</TableCell>
+                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.profitMargin.toFixed(2)}</TableCell>
+                  <TableCell className="px-6 py-4">
+                    <Pencil className="w-4 h-4 text-gray-500 cursor-pointer" />
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -132,11 +134,11 @@ export default function PriceAdjustmentsPage() {
         </div>
 
         {/* Confirm Adjustment and Pagination in a single row */}
-        <div className="flex flex-col md:flex-row items-center justify-between w-full mt-6 gap-4 md:gap-0">
-          <Button className="h-12 px-8 text-lg font-semibold flex items-center gap-2 bg-gray-800 hover:bg-gray-900 w-full md:w-auto">
+        <div className="flex justify-between items-center mt-6">
+          <Button className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md flex items-center gap-2">
             <span className="text-xl">✓</span> Confirm Adjustment
           </Button>
-          <div className="flex items-center gap-2 w-full md:w-auto justify-end">
+          <div className="flex items-center gap-2">
             <button
               className="px-3 py-1 text-base text-gray-600 hover:text-gray-900 transition-colors"
               onClick={() => setPage(Math.max(1, page - 1))}
@@ -165,11 +167,11 @@ export default function PriceAdjustmentsPage() {
           </div>
         </div>
         {/* Total Profit Adjustment below the button, left-aligned */}
-        <div className="flex items-center mt-4 mb-8 sm:mb-12 w-full">
+        <div className="flex items-center mt-4 mb-8 sm:mb-12 w-full justify-start">
           <div className="h-12 w-0.5 bg-black mr-4 rounded" />
           <div className="flex flex-col items-start">
-            <span className="text-gray-500 text-base mb-1">Total Profit Adjustment</span>
-            <span className="text-5xl font-bold text-gray-900">Php {totalProfitAdjustment.toFixed(2)}</span>
+            <span className="text-xs text-gray-500 mb-1 font-medium">Total Profit Adjustment</span>
+            <span className="text-3xl font-extrabold text-gray-900">Php {totalProfitAdjustment.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
           </div>
         </div>
       </div>
