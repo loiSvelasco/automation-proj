@@ -6,12 +6,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table"
 
-// Mock data for merchants
+// Mock data for registered merchants (matching screenshot)
 const mockMerchants = [
-  { id: 1, code: "MRC001", description: "FreshMart Supermarket", category: "Supermarket" },
-  { id: 2, code: "MRC002", description: "Oceanic Seafood Supply", category: "Seafood" },
-  { id: 3, code: "MRC003", description: "Prime Cuts Butchery", category: "Butcher" },
- 
+  { id: 1, customerId: "000001", firstName: "Juan", lastName: "Dela Cruz", businessName: "Agromet", address: "Laoag City" },
+  { id: 2, customerId: "000002", firstName: "Melchora", lastName: "Aquino", businessName: "Pinakbet", address: "San Nicolas" },
+  { id: 3, customerId: "000003", firstName: "Juancho", lastName: "Melchor", businessName: "Kaluguran", address: "None" },
 ]
 
 export default function RegisteredMerchants() {
@@ -63,19 +62,23 @@ export default function RegisteredMerchants() {
           <TableHeader>
             <TableRow>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-16">#</TableHead>
-              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Code</TableHead>
-              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Description</TableHead>
-              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Category</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Customer ID</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">First Name</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Last Name</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Business Name</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Address</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-24">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {mockMerchants.map((merchant) => (
               <TableRow key={merchant.id} className="hover:bg-gray-50">
-                <TableCell className="px-6 py-4 text-sm text-gray-900">{merchant.id}</TableCell>
-                <TableCell className="px-6 py-4 text-sm text-gray-900">{merchant.code}</TableCell>
-                <TableCell className="px-6 py-4 text-sm text-gray-900">{merchant.description}</TableCell>
-                <TableCell className="px-6 py-4 text-sm text-gray-900">{merchant.category}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900 font-bold">{merchant.id}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{merchant.customerId}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{merchant.firstName}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{merchant.lastName}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{merchant.businessName}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{merchant.address}</TableCell>
                 <TableCell className="px-6 py-4">
                   <div className="flex items-center gap-2">
                     <button
@@ -96,7 +99,9 @@ export default function RegisteredMerchants() {
             ))}
             {/* Placeholder row */}
             <TableRow className="hover:bg-gray-50">
-              <TableCell className="px-6 py-4 text-sm text-gray-400">4</TableCell>
+              <TableCell className="px-6 py-4 text-sm text-gray-400 font-bold">4</TableCell>
+              <TableCell className="px-6 py-4 text-sm text-gray-400">Placeholder</TableCell>
+              <TableCell className="px-6 py-4 text-sm text-gray-400">Placeholder</TableCell>
               <TableCell className="px-6 py-4 text-sm text-gray-400">Placeholder</TableCell>
               <TableCell className="px-6 py-4 text-sm text-gray-400">Placeholder</TableCell>
               <TableCell className="px-6 py-4 text-sm text-gray-400">Placeholder</TableCell>

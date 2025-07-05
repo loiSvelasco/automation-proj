@@ -167,15 +167,15 @@ export default function CollectionsDashboard() {
                 <h2 className="text-lg font-medium text-gray-700 mb-1">Total Collections</h2>
                 <div className="text-5xl md:text-7xl font-bold text-gray-900 leading-none">
                   {loading ? "--" : `$${(totalCollections || 0).toLocaleString()}`}
-                </div>
-              </div>
+          </div>
+      </div>
               <div className="flex flex-col items-center flex-1">
                 <h2 className="text-lg font-medium text-gray-700 mb-1">Collection Rate</h2>
                 <div className="text-5xl md:text-7xl font-bold text-gray-900 leading-none">
                   {loading ? "--" : `${collectionRate}%`}
-                </div>
-              </div>
-            </div>
+      </div>
+    </div>
+          </div>
           </div>
           {/* Top Right: Area Chart */}
           <Card className="border-gray-200 h-full flex flex-col">
@@ -188,7 +188,7 @@ export default function CollectionsDashboard() {
                 <div className="flex items-center gap-1">
                   <div className="w-3 h-3 bg-yellow-400 rounded"></div>
                   <span>Card</span>
-                </div>
+      </div>
               </div>
             </CardHeader>
             <CardContent className="p-0 flex-1 flex flex-col justify-center">
