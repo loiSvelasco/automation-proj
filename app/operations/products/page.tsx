@@ -96,19 +96,7 @@ export default function RegisteredProducts() {
                 </TableCell>
               </TableRow>
             ))}
-            {/* Placeholder row */}
-            <TableRow className="hover:bg-gray-50">
-              <TableCell className="px-6 py-4 text-sm text-gray-400">6</TableCell>
-              <TableCell className="px-6 py-4 text-sm text-gray-400">Placeholder</TableCell>
-              <TableCell className="px-6 py-4 text-sm text-gray-400">Placeholder</TableCell>
-              <TableCell className="px-6 py-4 text-sm text-gray-400">Placeholder</TableCell>
-              <TableCell className="px-6 py-4 text-sm text-gray-400">Placeholder</TableCell>
-              <TableCell className="px-6 py-4">
-                <button onClick={handleAdd} className="text-gray-600 hover:text-gray-900 transition-colors">
-                  <Plus className="w-4 h-4" />
-                </button>
-              </TableCell>
-            </TableRow>
+           
           </TableBody>
         </Table>
       </div>

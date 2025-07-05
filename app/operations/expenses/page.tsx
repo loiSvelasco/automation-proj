@@ -15,6 +15,8 @@ const mockExpenses = [
 
 export default function SitExpensesPage() {
   const [date, setDate] = useState("7/5/2025");
+  const [bcb, setBcb] = useState("2000.00");
+  const [cashOnHand, setCashOnHand] = useState(900);
   const [search, setSearch] = useState("");
   const [expenses, setExpenses] = useState(mockExpenses);
   const [page, setPage] = useState(1);
@@ -25,21 +27,34 @@ export default function SitExpensesPage() {
 
   return (
     <div className="bg-white">
-      {/* Top Row: Date filter (left) and Total Expenses (right), both with vertical lines */}
+      {/* Top Row: Date/BCB (left) and Total Expenses/Cash on Hand (right), both with vertical lines */}
       <div className="flex flex-col md:flex-row items-end justify-between gap-6 mb-8 w-full">
-        {/* Date filter */}
-        <div className="flex flex-col w-full md:min-w-[220px] md:max-w-xs border-l-8 border-gray-700 pl-4">
-          <label htmlFor="date" className="text-xs text-gray-500 mb-1 font-medium">Date:</label>
+        {/* Date and BCB filter */}
+        <div className="flex flex-col w-full md:min-w-[260px] md:max-w-xs border-l-8 border-gray-700 pl-4 gap-2">
           <div className="flex items-center gap-2">
+            <label htmlFor="date" className="text-xs text-gray-500 font-medium min-w-[40px]">Date:</label>
             <Input id="date" value={date} onChange={e => setDate(e.target.value)} className="h-9 text-base" />
             <Calendar className="w-5 h-5 text-gray-900" />
           </div>
+          <div className="flex items-center gap-2">
+            <label htmlFor="bcb" className="text-xs text-gray-500 font-medium min-w-[40px]">BCB:</label>
+            <Input id="bcb" value={bcb} onChange={e => setBcb(e.target.value)} className="h-9 text-base" placeholder="2,000.00" />
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" className="text-gray-900"><rect width="20" height="20" x="2" y="2" fill="currentColor" rx="2"/><path d="M7 13l3 3 7-7" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </div>
         </div>
-        {/* Total Expenses (aligned, one line, price-adjustments style) */}
-        <div className="flex items-center border-l-2 border-black pl-4 min-h-[56px]">
-          <div className="flex flex-col items-start">
-            <span className="text-xs text-gray-500 font-medium">Total Expenses</span>
-            <span className="text-3xl font-extrabold text-gray-900 leading-none">Php {totalExpenses.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+        {/* Total Expenses and Cash on Hand */}
+        <div className="flex flex-col sm:flex-row items-center gap-6">
+          <div className="flex items-center border-l-2 border-black pl-4 min-h-[56px]">
+            <div className="flex flex-col items-start">
+              <span className="text-xs text-gray-500 font-medium">Total Expenses</span>
+              <span className="text-3xl font-extrabold text-gray-900 leading-none">Php {totalExpenses.toLocaleString(undefined, { minimumFractionDigits: 0 })}</span>
+            </div>
+          </div>
+          <div className="flex items-center border-l-2 border-black pl-4 min-h-[56px]">
+            <div className="flex flex-col items-start">
+              <span className="text-xs text-gray-500 font-medium">Cash on Hand</span>
+              <span className="text-3xl font-extrabold text-gray-900 leading-none">Php {Number(cashOnHand).toLocaleString(undefined, { minimumFractionDigits: 0 })}</span>
+            </div>
           </div>
         </div>
       </div>

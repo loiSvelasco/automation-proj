@@ -32,7 +32,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="#">Stocks</Link>
+                <Link href="/stocks">Stocks</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
@@ -42,7 +42,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="#">Operations</Link>
+                <Link href="/operations/operation_main">Operations</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>

@@ -100,7 +100,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link href="#">Sales</Link>
+                  <Link href="/sales">Sales</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
@@ -109,7 +109,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link href="#">Operations</Link>
+                  <Link href="/operations/operation_main">Operations</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
