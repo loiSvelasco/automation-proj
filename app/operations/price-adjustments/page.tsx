@@ -10,9 +10,9 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { Combobox, ComboboxOption } from "@/components/ui/combobox";
 
 const initialItems = [
-  { id: 1, dr: "000001", description: "Belly", actualWeight: "10 kg", unitCost: 400, sold: 0, retailPrice: 400, profitMargin: 0 },
-  { id: 2, dr: "000001", description: "Head", actualWeight: "9 kg", unitCost: 200, sold: 0, retailPrice: 210, profitMargin: 10 },
-  { id: 3, dr: "000001", description: "Loin", actualWeight: "5 kg", unitCost: 500, sold: 0, retailPrice: 400, profitMargin: 100 },
+  { id: 1, dr: "000001", product: "Belly", actualWeight: "10 kg", unitCost: 400, sold: 0, retailPrice: 400, profitMargin: 0 },
+  { id: 2, dr: "000001", product: "Head", actualWeight: "9 kg", unitCost: 200, sold: 0, retailPrice: 210, profitMargin: 10 },
+  { id: 3, dr: "000001", product: "Loin", actualWeight: "5 kg", unitCost: 500, sold: 0, retailPrice: 400, profitMargin: 100 },
 ];
 
 export default function PriceAdjustmentsPage() {
@@ -101,7 +101,7 @@ export default function PriceAdjustmentsPage() {
               <TableRow>
                 <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-16">#</TableHead>
                 <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">DR</TableHead>
-                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Description</TableHead>
+                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Product</TableHead>
                 <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Actual Weight</TableHead>
                 <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Unit Cost</TableHead>
                 <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Sold</TableHead>
@@ -113,12 +113,12 @@ export default function PriceAdjustmentsPage() {
             <TableBody>
               {pagedItems.filter(item =>
                 item.dr.includes(search) ||
-                item.description.toLowerCase().includes(search.toLowerCase())
+                item.product.toLowerCase().includes(search.toLowerCase())
               ).map((item, idx) => (
                 <TableRow key={item.id} className="hover:bg-gray-50">
                   <TableCell className="px-6 py-4 text-sm text-gray-900">{(page - 1) * itemsPerPage + idx + 1}</TableCell>
                   <TableCell className="px-6 py-4 text-sm text-gray-900">{item.dr}</TableCell>
-                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.description}</TableCell>
+                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.product}</TableCell>
                   <TableCell className="px-6 py-4 text-sm text-gray-900">{item.actualWeight}</TableCell>
                   <TableCell className="px-6 py-4 text-sm text-gray-900">{item.unitCost.toFixed(2)}</TableCell>
                   <TableCell className="px-6 py-4 text-sm text-gray-900">{item.sold}</TableCell>

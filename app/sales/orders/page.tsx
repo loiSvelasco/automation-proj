@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Edit, Trash2, Plus, List } from "lucide-react";
+import { Search, Edit, Trash2, Plus, List, ArrowBigRightDash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table"
@@ -43,22 +43,24 @@ export default function OrdersPage() {
     <div className="bg-white">
       {/* Controls Row - aligned horizontally and spaced evenly */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
-        <div className="flex items-center gap-4 flex-1 min-w-[220px]">
-          <span className="font-medium">Merchant:</span>
+        <div className="flex items-center flex-1 min-w-[220px]">
+          {/* Vertical line */}
+          <div className="w-px h-8 bg-black mr-4" />
+          <span className="font-medium text-gray-600 mr-2">Merchant:</span>
           <Input
-            className="w-full max-w-xs"
+            className="w-full max-w-xs mr-2"
             placeholder="Melchora B. Aquino"
             value={merchant}
             onChange={e => setMerchant(e.target.value)}
           />
-          <Button className="bg-gray-800 hover:bg-gray-900 text-white flex gap-2 items-center">
+          <Button className="bg-gray-800 hover:bg-gray-900 text-white flex gap-2 items-center mr-2">
             <Plus className="w-4 h-4" /> Add
+          </Button>
+          <Button className="bg-gray-800 hover:bg-gray-900 text-white flex gap-2 items-center">
+            <Search className="w-4 h-4" /> Search
           </Button>
         </div>
         <div className="flex items-center gap-4 flex-1 min-w-[220px] justify-end">
-          <Button variant="outline" className="flex gap-2 items-center">
-            <Search className="w-4 h-4" /> Search
-          </Button>
           <span className="font-medium">Date:</span>
           <Input
             className="w-full max-w-xs"
@@ -185,14 +187,22 @@ export default function OrdersPage() {
 
       {/* Bottom Section */}
       <div className="flex justify-between items-center mt-6">
-        <Button
-          onClick={handleNewOrder}
-          className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          New Order
-        </Button>
-
+        <div className="flex gap-4">
+          <Button
+            onClick={handleNewOrder}
+            className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Add Item
+          </Button> 
+          <Button
+            onClick={handleNewOrder}
+            className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md flex items-center gap-2"
+          >
+            <ArrowBigRightDash className="w-4 h-4" />
+            Finalize
+          </Button>
+        </div>
         {/* Pagination */}
         <div className="flex items-center gap-2">
           <button

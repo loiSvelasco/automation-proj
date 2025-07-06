@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Plus, List, ShoppingBagIcon, ShoppingCart } from "lucide-react";
+import { Search, Plus, List, ShoppingBagIcon, ShoppingCart, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table"
@@ -26,6 +26,8 @@ export default function CheckoutPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [showOrderSlip, setShowOrderSlip] = useState(false);
+  const [paymentOption, setPaymentOption] = useState("Cash");
+  const [showPaymentDropdown, setShowPaymentDropdown] = useState(false);
 
   const filteredMerchants = merchantOptions.filter((m) =>
     m.toLowerCase().includes(merchant.toLowerCase())
@@ -57,6 +59,8 @@ export default function CheckoutPage() {
       {/* Merchant, Load Order, Amount Due */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
         <div className="flex items-center gap-4 flex-1 min-w-[220px] relative">
+          {/*  Merchant */}
+          <div className="w-px h-10 bg-black mr-4" />
           <span className="font-medium">Merchant:</span>
           <div className="relative w-full max-w-xs">
             <Input
@@ -93,9 +97,13 @@ export default function CheckoutPage() {
           </div>
           <Button className="bg-gray-800 hover:bg-gray-900 text-white flex gap-2 items-center">Load Order</Button>
         </div>
-        <div className="flex flex-col items-end flex-1 min-w-[220px] md:items-end">
-          <span className="font-medium text-lg text-gray-600">Amount Due</span>
-          <span className="text-3xl font-extrabold text-gray-900">Php {amountDue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+        {/* Amount Due Section  */}
+        <div className="flex items-center flex-1 min-w-[220px] md:justify-end">
+          <div className="w-px h-10 bg-black mr-4" />
+          <div className="flex flex-col justify-center">
+            <span className="font-medium text-lg text-gray-600 mb-0">Amount Due</span>
+            <span className="text-3xl font-extrabold text-gray-900 leading-tight">Php {amountDue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+          </div>
         </div>
       </div>
 
@@ -155,14 +163,45 @@ export default function CheckoutPage() {
 
       {/* Bottom Section */}
       <div className="flex justify-between items-center mt-6">
-        <Button
-          onClick={handleCheckout}
-          className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md flex items-center gap-2"
-        >
-          <ShoppingCart className="w-4 h-4" />
-          Check Out
-        </Button>
-
+        <div className="flex items-center gap-4">
+          {/* Thin vertical line before Payment Option */}
+          <div className="w-px h-10 bg-black mr-4" />
+          <span className="font-medium">Payment Option:</span>
+          <div className="relative">
+            <Button
+              type="button"
+              className="bg-gray-800 hover:bg-gray-900 text-white flex items-center gap-2 px-6 py-2 rounded-md font-semibold h-12"
+              style={{ minWidth: '140px' }}
+              onClick={() => setShowPaymentDropdown((v) => !v)}
+            >
+              {paymentOption} <ChevronDown className="w-4 h-4" />
+            </Button>
+            {showPaymentDropdown && (
+              <div className="absolute left-0 top-full mt-2 bg-white border rounded shadow-md z-50 min-w-[160px]">
+                {["Cash", "Online", "Purchase Order"].map(option => (
+                  <div
+                    key={option}
+                    className={`px-4 py-2 cursor-pointer hover:bg-gray-100 text-sm ${paymentOption === option ? "font-bold text-gray-900" : "text-gray-700"}`}
+                    onMouseDown={() => {
+                      setPaymentOption(option);
+                      setShowPaymentDropdown(false);
+                    }}
+                  >
+                    {option}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <Button
+            onClick={handleCheckout}
+            className="bg-gray-800 hover:bg-gray-900 text-white px-6 py-2 rounded-md flex items-center gap-2 font-semibold h-12"
+            style={{ minWidth: '140px' }}
+          >
+            <ShoppingCart className="w-4 h-4" />
+            Check Out
+          </Button>
+        </div>
         {/* Pagination */}
         <div className="flex items-center gap-2">
           <button

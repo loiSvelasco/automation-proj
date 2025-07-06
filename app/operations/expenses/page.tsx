@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Footer from "@/components/ui/footer";
-import { Pencil, Trash2, Plus, Calendar, Search, X, List } from "lucide-react";
+import { Pencil, Trash2, Plus, Calendar, Search, X, List, Printer, Download } from "lucide-react";
+import ExpensesPrintDownloadModal from "./ExpensesPrintDownloadModal";
 
 const mockExpenses = [
   { id: 1, date: "7/5/2025", payee: "Travel ELF", particulars: "Rubber Band", type: "Supplies", amount: 24.0 },
@@ -24,6 +25,20 @@ export default function SitExpensesPage() {
   const pagedExpenses = expenses.slice((page - 1) * itemsPerPage, page * itemsPerPage);
   const totalPages = Math.ceil(expenses.length / itemsPerPage);
   const totalExpenses = expenses.reduce((sum, item) => sum + (item.amount || 0), 0);
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState<'print' | 'download' | null>(null);
+
+  // Placeholder for API integration
+  const handleModalAction = () => {
+    if (modalType === 'print') {
+      // Plug your print API here
+      window.print();
+    } else if (modalType === 'download') {
+      // Plug your download API here
+      alert('Download API call goes here');
+    }
+    setShowModal(false);
+  };
 
   return (
     <div className="bg-white">
@@ -137,12 +152,28 @@ export default function SitExpensesPage() {
 
       {/* Bottom Section */}
       <div className="flex justify-between items-center mt-6">
-        <Button
-          className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          Add Expense Item
-        </Button>
+        <div className="flex gap-4">
+          <Button
+            className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Add Expense Item
+          </Button>
+          <Button
+            className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md flex items-center gap-2"
+            onClick={() => { setModalType('print'); setShowModal(true); }}
+          >
+            <Printer className="w-4 h-4" />
+            Print
+          </Button>
+          <Button
+            className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md flex items-center gap-2"
+            onClick={() => { setModalType('download'); setShowModal(true); }}
+          >
+            <Download className="w-4 h-4" />
+            Download
+          </Button>
+        </div>
 
         {/* Pagination */}
         <div className="flex items-center gap-2">
@@ -173,6 +204,18 @@ export default function SitExpensesPage() {
           </button>
         </div>
       </div>
+
+      {/* Modal for Print/Download */}
+      <ExpensesPrintDownloadModal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        type={modalType || 'print'}
+        expenses={expenses}
+        date={date}
+        bcb={bcb}
+        cashOnHand={cashOnHand}
+        onAction={handleModalAction}
+      />
     </div>
   );
 } 

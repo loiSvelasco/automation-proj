@@ -103,19 +103,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="#">Deliveries</Link>
+                <Link href="/operations/deliveries">Deliveries</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="#">Returns</Link>
+                <Link href="/operations/returns">Returns</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="#">Condemn</Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
+            
           </NavigationMenuList>
         </NavigationMenu>
         <div className="mt-2 text-center">© 2025 3S and R Frozen Meat Trading Inc.</div>

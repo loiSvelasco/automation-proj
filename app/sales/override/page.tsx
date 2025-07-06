@@ -56,6 +56,8 @@ export default function OverridePage() {
       {/* Merchant, Load Order, Amount Due */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
         <div className="flex items-center gap-4 flex-1 min-w-[220px] relative">
+          {/* Thin vertical line before Merchant */}
+          <div className="w-px h-10 bg-black mr-4" />
           <span className="font-medium">Merchant:</span>
           <div className="relative w-full max-w-xs">
             <Input
@@ -92,9 +94,13 @@ export default function OverridePage() {
           </div>
           <Button className="bg-gray-800 hover:bg-gray-900 text-white flex gap-2 items-center">Load Order</Button>
         </div>
-        <div className="flex flex-col items-end flex-1 min-w-[220px] md:items-end">
-          <span className="font-medium text-lg text-gray-600">Amount Due</span>
-          <span className="text-3xl font-extrabold text-gray-900">Php {amountDue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+        {/* Amount Due Section with thin vertical line and aligned Php label */}
+        <div className="flex items-center flex-1 min-w-[220px] md:justify-end">
+          <div className="w-px h-10 bg-black mr-4" />
+          <div className="flex flex-col justify-center">
+            <span className="font-medium text-lg text-gray-600 mb-0">Amount Due</span>
+            <span className="text-3xl font-extrabold text-gray-900 leading-tight">Php {amountDue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+          </div>
         </div>
       </div>
 
@@ -221,14 +227,21 @@ export default function OverridePage() {
 
       {/* Bottom Section */}
       <div className="flex justify-between items-center mt-6">
-        <Button
-          onClick={handleNewOverride}
-          className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          New Override
-        </Button>
-
+        <div className="flex items-center gap-4">
+          <Button
+            onClick={handleNewOverride}
+            className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Add Item
+          </Button>
+          <Button
+            className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md flex items-center gap-2"
+          >
+            <List className="w-4 h-4" />
+            Order Override
+          </Button>
+        </div>
         {/* Pagination */}
         <div className="flex items-center gap-2">
           <button
