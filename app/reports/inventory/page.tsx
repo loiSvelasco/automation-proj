@@ -10,6 +10,9 @@ import {
   BatteryFull,
   BatteryMedium,
   BatteryLow,
+  Calendar,
+  Printer,
+  Download,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,7 +49,7 @@ const mockItems = [
   },
 ];
 
-export default function StocksInventory() {
+export default function ReportsInventory() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -67,7 +70,47 @@ export default function StocksInventory() {
   };
 
   return (
-    <div className="bg-white p-4">
+    <div className="bg-white p-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col lg:flex-row flex-wrap gap-4 justify-around items-start mb-8 w-6xl">
+        <div className="flex flex-col gap-2 border-l-8 border-black pl-2">
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium">Dates:</label>
+            <div className="relative w-full max-w-xs">
+              <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Date"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium">DRs:</label>
+            <div className="relative w-full max-w-xs">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
+          <div className="border-l-8 border-black px-4 py-2 flex flex-col justify-center">
+            <h1 className="text-lg font-medium">Available Items</h1>
+            <p className="text-4xl font-semibold">3</p>
+          </div>
+        </div>
+        <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
+          <div className="border-l-8 border-black px-4 py-2 flex flex-col justify-center">
+            <h1 className="text-lg font-medium">Available Stocks</h1>
+            <p className="text-4xl font-semibold">22 kls</p>
+          </div>
+        </div>
+      </div>
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
         <div className="flex items-center gap-2">
           <div className="bg-gray-800 text-white px-2 py-1 rounded text-xs font-medium flex items-center gap-1">
@@ -152,6 +195,12 @@ export default function StocksInventory() {
 
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mt-6">
         <div className="flex items-center space-x-4 max-w-64">
+          <Button className="bg-gray-800 hover:bg-gray-900 text-white flex items-center gap-2">
+            <Printer className="w-4 h-4" /> Print
+          </Button>
+          <Button className="bg-gray-800 hover:bg-gray-900 text-white flex items-center gap-2">
+            <Download className="w-4 h-4" /> Download
+          </Button>
           <div className="flex items-center space-x-1">
             <BatteryFull className="w-4 h-4 text-gray-700" />
             <label className="text-sm text-gray-700">High</label>

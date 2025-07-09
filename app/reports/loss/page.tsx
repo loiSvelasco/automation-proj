@@ -10,6 +10,9 @@ import {
   BatteryFull,
   BatteryMedium,
   BatteryLow,
+  Calendar,
+  Printer,
+  Download,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,35 +21,37 @@ import { Input } from "@/components/ui/input";
 const mockItems = [
   {
     id: 1,
+    date: "7/5/2025",
     drNumber: "000001",
-    item: "Belly",
-    availableStocks: "10 Kls",
-    status: "High",
+    deliveryAmount: "100,000.00",
+    salesAmount: "150,000.00",
+    lossInSales: "0.00",
+    condemned: "5,000.00",
+    totalLoss: "5,000.00",
   },
   {
     id: 2,
+    date: "7/5/2025",
     drNumber: "000002",
-    item: "Head",
-    availableStocks: "5 Kls",
-    status: "Moderate",
+    deliveryAmount: "Head",
+    salesAmount: "156,000.00",
+    lossInSales: "0.00",
+    condemned: "7,000.00",
+    totalLoss: "7,000.00",
   },
   {
     id: 3,
+    date: "7/5/2025",
     drNumber: "000003",
-    item: "Loin",
-    availableStocks: "2 Kls",
-    status: "Low",
-  },
-  {
-    id: 4,
-    drNumber: "000003",
-    item: "Belly",
-    availableStocks: "2 Kls",
-    status: "High",
+    deliveryAmount: "Loin",
+    salesAmount: "18,000.00",
+    lossInSales: "2,000.00",
+    condemned: "1,000.00",
+    totalLoss: "3,000.00",
   },
 ];
 
-export default function StocksInventory() {
+export default function ReportsLoss() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -67,7 +72,41 @@ export default function StocksInventory() {
   };
 
   return (
-    <div className="bg-white p-4">
+    <div className="bg-white p-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col lg:flex-row items-start mb-8 w-6xl">
+        <div className="flex flex-col gap-2 border-l-8 border-black pl-2 pr-10">
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium">Dates:</label>
+            <div className="relative w-full max-w-xs">
+              <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Date"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium">DRs:</label>
+            <div className="relative w-full max-w-xs">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
+          <div className="border-l-8 border-black px-4 py-2 flex flex-col justify-center">
+            <h1 className="text-lg font-medium">Total Loss</h1>
+            <p className="text-4xl font-semibold">Php 15,000.00</p>
+          </div>
+        </div>
+      </div>
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
         <div className="flex items-center gap-2">
           <div className="bg-gray-800 text-white px-2 py-1 rounded text-xs font-medium flex items-center gap-1">
@@ -94,20 +133,29 @@ export default function StocksInventory() {
         <table className="min-w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
-              <th className="px-4 py-2 text-left font-medium text-gray-900 w-12">
+              <th className="px-4 py-2 text-left font-medium text-gray-900">
                 #
               </th>
               <th className="px-4 py-2 text-left font-medium text-gray-900">
-                DR Numbers
+                Date
               </th>
               <th className="px-4 py-2 text-left font-medium text-gray-900">
-                items
+                DR
               </th>
               <th className="px-4 py-2 text-left font-medium text-gray-900">
-                Available Stocks
+                Delivery Amount
               </th>
-              <th className="px-4 py-2 text-left font-medium text-gray-900 w-24">
-                Status
+              <th className="px-4 py-2 text-left font-medium text-gray-900">
+                Sales Amount
+              </th>
+              <th className="px-4 py-2 text-left font-medium text-gray-900">
+                Loss in Sales
+              </th>
+              <th className="px-4 py-2 text-left font-medium text-gray-900">
+                Condemned
+              </th>
+              <th className="px-4 py-2 text-left font-medium text-gray-900">
+                Total Loss
               </th>
             </tr>
           </thead>
@@ -115,20 +163,13 @@ export default function StocksInventory() {
             {mockItems.map((item) => (
               <tr key={item.id} className="hover:bg-gray-50">
                 <td className="px-4 py-2">{item.id}</td>
+                <td className="px-4 py-2">{item.date}</td>
                 <td className="px-4 py-2">{item.drNumber}</td>
-                <td className="px-4 py-2">{item.item}</td>
-                <td className="px-4 py-2">{item.availableStocks}</td>
-                <td className="px-4 py-2 pl-6">
-                  {item.status === "High" && (
-                    <BatteryFull className="w-4 h-4 text-gray-700" />
-                  )}
-                  {item.status === "Moderate" && (
-                    <BatteryMedium className="w-4 h-4 text-gray-700" />
-                  )}
-                  {item.status === "Low" && (
-                    <BatteryLow className="w-4 h-4 text-gray-700" />
-                  )}
-                </td>
+                <td className="px-4 py-2">{item.deliveryAmount}</td>
+                <td className="px-4 py-2">{item.salesAmount}</td>
+                <td className="px-4 py-2">{item.lossInSales}</td>
+                <td className="px-4 py-2">{item.condemned}</td>
+                <td className="px-4 py-2">{item.totalLoss}</td>
               </tr>
             ))}
 
@@ -152,18 +193,12 @@ export default function StocksInventory() {
 
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mt-6">
         <div className="flex items-center space-x-4 max-w-64">
-          <div className="flex items-center space-x-1">
-            <BatteryFull className="w-4 h-4 text-gray-700" />
-            <label className="text-sm text-gray-700">High</label>
-          </div>
-          <div className="flex items-center space-x-1">
-            <BatteryMedium className="w-4 h-4 text-gray-700" />
-            <label className="text-sm text-gray-700">Moderate</label>
-          </div>
-          <div className="flex items-center space-x-1">
-            <BatteryLow className="w-4 h-4 text-gray-700" />
-            <label className="text-sm text-gray-700">Low</label>
-          </div>
+          <Button className="bg-gray-800 hover:bg-gray-900 text-white flex items-center gap-2">
+            <Printer className="w-4 h-4" /> Print
+          </Button>
+          <Button className="bg-gray-800 hover:bg-gray-900 text-white flex items-center gap-2">
+            <Download className="w-4 h-4" /> Download
+          </Button>
         </div>
 
         <div className="flex justify-center md:justify-end gap-2">

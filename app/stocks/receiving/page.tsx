@@ -20,7 +20,7 @@ const mockItems = [
   { id: 3, item: "Loin", deliveryWeight: "5 Kg", actualWeight: "10 Kg", unitPrice: "100.00", amount: "1000.00" },
 ];
 
-export default function RegisteredMerchants() {
+export default function StocksReceiving() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 

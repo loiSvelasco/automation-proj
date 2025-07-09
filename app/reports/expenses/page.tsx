@@ -10,6 +10,9 @@ import {
   BatteryFull,
   BatteryMedium,
   BatteryLow,
+  Calendar,
+  Printer,
+  Download,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,35 +21,28 @@ import { Input } from "@/components/ui/input";
 const mockItems = [
   {
     id: 1,
-    drNumber: "000001",
-    item: "Belly",
-    availableStocks: "10 Kls",
-    status: "High",
+    date: "7/5/2025",
+    bcb: "50,000.00",
+    expenses: "49,000.00",
+    eodc: "1,000.00",
   },
   {
     id: 2,
-    drNumber: "000002",
-    item: "Head",
-    availableStocks: "5 Kls",
-    status: "Moderate",
+    date: "7/5/2025",
+    bcb: "20,000.00",
+    expenses: "19,000.00",
+    eodc: "1,000.00",
   },
   {
     id: 3,
-    drNumber: "000003",
-    item: "Loin",
-    availableStocks: "2 Kls",
-    status: "Low",
-  },
-  {
-    id: 4,
-    drNumber: "000003",
-    item: "Belly",
-    availableStocks: "2 Kls",
-    status: "High",
+    date: "7/5/2025",
+    bcb: "10,000.00",
+    expenses: "9,000.00",
+    eodc: "1,000.00",
   },
 ];
 
-export default function StocksInventory() {
+export default function ReportsExpenses() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -67,7 +63,35 @@ export default function StocksInventory() {
   };
 
   return (
-    <div className="bg-white p-4">
+    <div className="bg-white p-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col lg:flex-row flex-wrap gap-4 justify-around items-start mb-8 w-6xl">
+        <div className="flex flex-col gap-2 border-l-8 border-black pl-2">
+          <div className="flex items-center gap-2 h-21">
+            <label className="text-sm font-medium">Dates:</label>
+            <div className="relative w-full max-w-xs">
+              <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Date"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
+          <div className="border-l-8 border-black px-4 py-2 flex flex-col justify-center">
+            <h1 className="text-lg font-medium">Total Expenses</h1>
+            <p className="text-4xl font-semibold">Php 77,000.00</p>
+          </div>
+        </div>
+        <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
+          <div className="border-l-8 border-black px-4 py-2 flex flex-col justify-center">
+            <h1 className="text-lg font-medium">Total End-of-Day Cash</h1>
+            <p className="text-4xl font-semibold">Php 3,000.00</p>
+          </div>
+        </div>
+      </div>
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
         <div className="flex items-center gap-2">
           <div className="bg-gray-800 text-white px-2 py-1 rounded text-xs font-medium flex items-center gap-1">
@@ -94,20 +118,20 @@ export default function StocksInventory() {
         <table className="min-w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
-              <th className="px-4 py-2 text-left font-medium text-gray-900 w-12">
+              <th className="px-4 py-2 text-left font-medium text-gray-900">
                 #
               </th>
               <th className="px-4 py-2 text-left font-medium text-gray-900">
-                DR Numbers
+                Date
               </th>
               <th className="px-4 py-2 text-left font-medium text-gray-900">
-                items
+                BCB
               </th>
               <th className="px-4 py-2 text-left font-medium text-gray-900">
-                Available Stocks
+                Expenses
               </th>
-              <th className="px-4 py-2 text-left font-medium text-gray-900 w-24">
-                Status
+              <th className="px-4 py-2 text-left font-medium text-gray-900">
+                EODC
               </th>
             </tr>
           </thead>
@@ -115,20 +139,10 @@ export default function StocksInventory() {
             {mockItems.map((item) => (
               <tr key={item.id} className="hover:bg-gray-50">
                 <td className="px-4 py-2">{item.id}</td>
-                <td className="px-4 py-2">{item.drNumber}</td>
-                <td className="px-4 py-2">{item.item}</td>
-                <td className="px-4 py-2">{item.availableStocks}</td>
-                <td className="px-4 py-2 pl-6">
-                  {item.status === "High" && (
-                    <BatteryFull className="w-4 h-4 text-gray-700" />
-                  )}
-                  {item.status === "Moderate" && (
-                    <BatteryMedium className="w-4 h-4 text-gray-700" />
-                  )}
-                  {item.status === "Low" && (
-                    <BatteryLow className="w-4 h-4 text-gray-700" />
-                  )}
-                </td>
+                <td className="px-4 py-2">{item.date}</td>
+                <td className="px-4 py-2">{item.bcb}</td>
+                <td className="px-4 py-2">{item.expenses}</td>
+                <td className="px-4 py-2">{item.eodc}</td>
               </tr>
             ))}
 
@@ -152,18 +166,12 @@ export default function StocksInventory() {
 
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mt-6">
         <div className="flex items-center space-x-4 max-w-64">
-          <div className="flex items-center space-x-1">
-            <BatteryFull className="w-4 h-4 text-gray-700" />
-            <label className="text-sm text-gray-700">High</label>
-          </div>
-          <div className="flex items-center space-x-1">
-            <BatteryMedium className="w-4 h-4 text-gray-700" />
-            <label className="text-sm text-gray-700">Moderate</label>
-          </div>
-          <div className="flex items-center space-x-1">
-            <BatteryLow className="w-4 h-4 text-gray-700" />
-            <label className="text-sm text-gray-700">Low</label>
-          </div>
+          <Button className="bg-gray-800 hover:bg-gray-900 text-white flex items-center gap-2">
+            <Printer className="w-4 h-4" /> Print
+          </Button>
+          <Button className="bg-gray-800 hover:bg-gray-900 text-white flex items-center gap-2">
+            <Download className="w-4 h-4" /> Download
+          </Button>
         </div>
 
         <div className="flex justify-center md:justify-end gap-2">

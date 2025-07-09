@@ -12,7 +12,7 @@ const mockItems = [
   { id: 3, code: "000003", description: "Loin", category: "Fast", reorderLevels: "[100, 4]kls" },
 ]
 
-export default function RegisteredMerchants() {
+export default function StocksItems() {
   const [searchTerm, setSearchTerm] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
 
