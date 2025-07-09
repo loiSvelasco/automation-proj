@@ -56,6 +56,34 @@ export default function PagesDirectory() {
         { name: "Receiving", href: "/stocks/receiving", description: "Receiving Stocks Pages" },
       ],
     },
+    {
+      title: "Operations",
+      description: "Operations management pages",
+      icon: <ClipboardCheck className="h-5 w-5" />, // You can change icon if you want
+      pages: [
+        { name: "Deliveries", href: "/operations/deliveries", description: "Manage and view deliveries" },
+        { name: "Returns", href: "/operations/returns", description: "Supplier and merchant returns" },
+        { name: "Expenses", href: "/operations/expenses", description: "List and manage expenses" },
+        { name: "Suppliers", href: "/operations/suppliers", description: "Registered suppliers" },
+        { name: "Employees", href: "/operations/employees", description: "Registered employees" },
+        { name: "Price Adjustments", href: "/operations/price-adjustments", description: "Adjust product prices" },
+        { name: "Operation Main", href: "/operations/operation_main", description: "Operations main dashboard" },
+        { name: "Merchants", href: "/operations/merchants", description: "Registered merchants" },
+        { name: "Products", href: "/operations/products", description: "Registered products" },
+      ],
+    },
+    {
+      title: "Sales",
+      description: "Sales and order management pages",
+      icon: <ShoppingCart className="h-5 w-5" />, // You can change icon if you want
+      pages: [
+        { name: "Sales Main", href: "/sales", description: "Sales main dashboard" },
+        { name: "Checkout", href: "/sales/checkout", description: "Checkout and order slip" },
+        { name: "Override", href: "/sales/override", description: "Override sales/orders" },
+        { name: "Orders", href: "/sales/orders", description: "Add and manage cart/orders" },
+      
+      ],
+    },
   ]
 
   return (
