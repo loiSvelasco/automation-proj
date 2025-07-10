@@ -32,7 +32,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/components/landing-page">Dashboard</Link>
+                <Link href="/">Dashboard</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
@@ -68,10 +68,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </NavigationMenuList>
         </NavigationMenu>
       </header>
-      <main className="flex-1 flex justify-center px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-7xl py-8">{children}</div>
+      <main className="flex-1 flex flex-col items-center justify-center p-8">
+        <div className="w-full max-w-5xl">{children}</div>
       </main>
-      <footer className="p-4 text-sm text-gray-600 flex flex-col items-center">
+      <footer className="p-4 text-sm text-gray-600 flex flex-col items-center border-t">
         <NavigationMenu>
           <NavigationMenuList>
             {salesNavItems.map((item) => (

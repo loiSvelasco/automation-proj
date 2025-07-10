@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,34 +5,26 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-const salesData = [
-  {
-    title: "Orders",
-    description: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    link: "/sales/orders",
-  },
-  {
-    title: "Check Out",
-    description: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    link: "/sales/checkout",
-  },
-  {
-    title: "Override",
-    description: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    link: "/sales/override",
-  },
-];
+interface CarouselItem {
+  title: string;
+  description: string;
+  link: string;
+}
+
+interface DashboardCarouselProps {
+  data: CarouselItem[];
+}
 
 const ITEMS_PER_PAGE = 3;
 
-export default function Sales() {
+export function DashboardCarousel({ data }: DashboardCarouselProps) {
   const router = useRouter();
   const [currentPage, setCurrentPage] = React.useState(0);
 
-  const totalPages = Math.ceil(salesData.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
   const startIndex = currentPage * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const visibleItems = salesData.slice(startIndex, endIndex);
+  const visibleItems = data.slice(startIndex, endIndex);
 
   const handlePrev = () => {
     if (currentPage > 0) {
@@ -49,10 +39,10 @@ export default function Sales() {
   };
 
   return (
-    <main className="flex-1 flex flex-col items-center justify-center p-8">
+    <div className="w-full">
       {/* Mobile view: 2 cols x 3 rows, no carousel */}
       <div className="md:hidden w-full max-w-5xl grid grid-cols-2 gap-4">
-        {salesData.map((item) => (
+        {data.map((item) => (
           <Card key={item.title} className="flex flex-col">
             <div className="h-40 overflow-hidden relative bg-gray-300">
               <Image
@@ -78,7 +68,7 @@ export default function Sales() {
       </div>
 
       {/* Desktop view: carousel */}
-      <div className="hidden md:block relative w-full max-w-5xl">
+      <div className="hidden md:block relative w-full max-w-5xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 transition-all duration-300 ease-in-out">
           {visibleItems.map((item) => (
             <Card key={item.title} className="flex flex-col">
@@ -139,6 +129,8 @@ export default function Sales() {
           ))}
         </div>
       </div>
-    </main>
+    </div>
   );
-} 
+}
+
+export default DashboardCarousel; 

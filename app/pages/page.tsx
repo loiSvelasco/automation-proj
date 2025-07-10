@@ -59,7 +59,7 @@ export default function PagesDirectory() {
     {
       title: "Operations",
       description: "Operations management pages",
-      icon: <ClipboardCheck className="h-5 w-5" />, // You can change icon if you want
+      icon: <ClipboardCheck className="h-5 w-5" />, 
       pages: [
         { name: "Deliveries", href: "/operations/deliveries", description: "Manage and view deliveries" },
         { name: "Returns", href: "/operations/returns", description: "Supplier and merchant returns" },
