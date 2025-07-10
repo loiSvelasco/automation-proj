@@ -127,7 +127,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link href="#">System</Link>
+                  <Link href="/system">System</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
 

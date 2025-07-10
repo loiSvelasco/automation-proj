@@ -49,7 +49,7 @@ export default function Stocks() {
                 className="mt-4 w-fit"
                 onClick={() => router.push(item.link)}
               >
-                View
+                Go
               </Button>
             </CardContent>
           </Card>

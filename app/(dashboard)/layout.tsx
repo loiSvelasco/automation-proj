@@ -17,9 +17,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen flex flex-col bg-white text-gray-900">
       <header className="flex items-center justify-between px-8 py-4 border-b">
         <div className="flex items-center gap-4">
-          <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center">
-            <Image src="/logo.jpg" width={100} height={100} alt="3sandrlogo" />
-          </div>
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-300 flex items-center justify-center">
+              <Link href="/">
+                <Image
+                  src="/logo.jpg"
+                  width={100}
+                  height={100}
+                  alt="3sandrlogo"
+                />
+              </Link>
+            </div>
           <span>Welcome Juan!</span>
         </div>
 

@@ -19,43 +19,51 @@ import {
 } from "@/components/ui/navigation-menu";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const data = [
   {
     title: "Merchants",
     description:
       "Registered merchant supplying quality meat products to our network of clients.",
+    link: "/dashboard/merchants"
   },
   {
     title: "Products",
     description:
       "Manage and track all available frozen meat products, including inventory details and product information",
+    link: "/dashboard/products",
   },
   {
     title: "Profit",
     description:
       "View and analyze profit data to monitor business growth and performance overtime",
+    link: "/dashboard/profits",
   },
   {
     title: "Loss",
     description:
       "Track and review inventory losses to identify waste, spoilage, or shrinkage, helping improve efficiency and reduce costs.",
+    link: "/dashboard/loss",
   },
   {
     title: "Collection",
     description:
       "Monitor and manage customer payments and collections to ensure steady cash flow and accurate financial records.",
+    link: "/dashboard/collections",
   },
   {
     title: "Expenses",
     description:
       "Keep track of all operational costs to manage budgets effectively and maintain profitability.",
+    link: "/dashboard/expenses",
   },
 ];
 
 const ITEMS_PER_PAGE = 3;
 
 export default function LandingPage() {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = React.useState(0);
 
   const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
@@ -101,22 +109,22 @@ export default function LandingPage() {
               <DrawerContent>
                 <DrawerTitle className="sr-only">Menu</DrawerTitle>
                 <nav className="flex flex-col gap-4 p-4">
-                  <Link href="#" className="text-gray-800 text-lg">
+                  <Link href="/" className="text-gray-800 text-lg">
                     Dashboard
                   </Link>
                   <Link href="/stocks" className="text-gray-800 text-lg">
                     Stocks
                   </Link>
-                  <Link href="#" className="text-gray-800 text-lg">
+                  <Link href="/sales" className="text-gray-800 text-lg">
                     Sales
                   </Link>
-                  <Link href="#" className="text-gray-800 text-lg">
+                  <Link href="/operations" className="text-gray-800 text-lg">
                     Operations
                   </Link>
-                  <Link href="#" className="text-gray-800 text-lg">
+                  <Link href="/reports" className="text-gray-800 text-lg">
                     Reports
                   </Link>
-                  <Link href="#" className="text-gray-800 text-lg">
+                  <Link href="/system" className="text-gray-800 text-lg">
                     System
                   </Link>
                   <Link href="#" className="text-gray-800 text-lg">
@@ -136,7 +144,7 @@ export default function LandingPage() {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link href="#">Dashboard</Link>
+                  <Link href="/">Dashboard</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
@@ -172,7 +180,7 @@ export default function LandingPage() {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link href="#">Reports</Link>
+                  <Link href="/reports">Reports</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
@@ -181,7 +189,7 @@ export default function LandingPage() {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link href="#">System</Link>
+                  <Link href="/system">System</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
@@ -217,7 +225,10 @@ export default function LandingPage() {
                   <h2 className="text-xl font-bold mb-2">{item.title}</h2>
                   <p className="text-gray-500 text-sm">{item.description}</p>
                 </div>
-                <Button className="mt-4 w-fit">View</Button>
+                <Button 
+                  className="mt-4 w-fit"
+                  onClick={() => router.push(item.link)}
+                >View</Button>
               </CardContent>
             </Card>
           ))}
@@ -242,7 +253,10 @@ export default function LandingPage() {
                     <h2 className="text-xl font-bold mb-2">{item.title}</h2>
                     <p className="text-gray-500 text-sm">{item.description}</p>
                   </div>
-                  <Button className="mt-4 w-fit">View</Button>
+                  <Button 
+                    className="mt-4 w-fit"
+                    onClick={() => router.push(item.link)}
+                  >View</Button>
                 </CardContent>
               </Card>
             ))}

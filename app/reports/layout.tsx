@@ -53,16 +53,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <Link href="/stocks" className="text-gray-800 text-lg">
                     Stocks
                   </Link>
-                  <Link href="#" className="text-gray-800 text-lg">
+                  <Link href="/sales" className="text-gray-800 text-lg">
                     Sales
                   </Link>
-                  <Link href="#" className="text-gray-800 text-lg">
+                  <Link href="/operations" className="text-gray-800 text-lg">
                     Operations
                   </Link>
                   <Link href="/reports" className="text-gray-800 text-lg">
                     Reports
                   </Link>
-                  <Link href="#" className="text-gray-800 text-lg">
+                  <Link href="/system" className="text-gray-800 text-lg">
                     System
                   </Link>
                   <Link href="#" className="text-gray-800 text-lg">
@@ -127,7 +127,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link href="#">System</Link>
+                  <Link href="/system">System</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
