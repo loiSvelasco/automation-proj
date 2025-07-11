@@ -5,11 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { List, Search, Plus, Pencil, X, Loader2 } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 
 const mockDeliveries = [
-  { id: 1, item: "Belly", deliveryWeight: 10, actualWeight: 10, unitPrice: 200, amount: 2000, profitMargin: "-", sellingPrice: "", },
-  { id: 2, item: "Head", deliveryWeight: 9, actualWeight: 7, unitPrice: 300, amount: 2100, profitMargin: "-", sellingPrice: "", },
-  { id: 3, item: "Loin", deliveryWeight: 5, actualWeight: 10, unitPrice: 100, amount: 1000, profitMargin: "-", sellingPrice: "", },
+  { id: 1, item: "Belly", deliveryWeight: 10, actualWeight: 10, boxes: 5, unitPrice: 200, amount: 2000, profitMargin: "-", sellingPrice: "", },
+  { id: 2, item: "Head", deliveryWeight: 9, actualWeight: 7, boxes: 3, unitPrice: 300, amount: 2100, profitMargin: "-", sellingPrice: "", },
+  { id: 3, item: "Loin", deliveryWeight: 5, actualWeight: 10, boxes: 5, unitPrice: 100, amount: 1000, profitMargin: "-", sellingPrice: "", },
 ];
 const mockNewDeliveries = [
   { id: 1, dr: "DR 00001", supplier: "Agromet" },
@@ -18,6 +20,7 @@ const mockNewDeliveries = [
 
 export default function DeliveriesPage() {
   const [date, setDate] = useState("07/06/2025");
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const [dr, setDr] = useState("000003");
   const [supplier, setSupplier] = useState("Atkins");
   const [search, setSearch] = useState("");
@@ -60,42 +63,69 @@ export default function DeliveriesPage() {
     <div className="bg-white">
       {/* Top Section */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8 w-full">
-        {/* Left: vertical line + Date/DR# group + Supplier/Buttons */}
+        {/*Date/DR# group */}
         <div className="flex flex-row items-center flex-1 min-w-0">
-          {/* Vertical line flush left */}
+          {/*  */}
           <div className="w-2 h-[72px] bg-black mr-4" />
           <div className="flex flex-col justify-between gap-2 min-w-[180px]">
             <div className="flex items-center gap-2 mb-1">
               <label className="text-xs text-gray-500 font-medium min-w-[40px]">Date:</label>
-              <Input value={date} onChange={e => setDate(e.target.value)} className="h-9 text-base w-[160px]" placeholder="MM/DD/YYYY" />
+              <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                <PopoverTrigger asChild>
+                  <Input
+                    value={date}
+                    onChange={e => setDate(e.target.value)}
+                    className="h-9 text-base w-[160px] cursor-pointer bg-white"
+                    placeholder="MM/DD/YYYY"
+                    onClick={() => setCalendarOpen(true)}
+                  />
+                </PopoverTrigger>
+                <PopoverContent align="start" className="p-2 w-auto">
+                  <Calendar
+                    mode="single"
+                    selected={date ? new Date(date) : undefined}
+                    onSelect={d => {
+                      if (d) setDate(d.toISOString().slice(0, 10));
+                      setCalendarOpen(false);
+                    }}
+                    className="border-none shadow-none"
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
             <div className="flex items-center gap-2">
               <label className="text-xs text-gray-500 font-medium min-w-[30px]">DR#:</label>
               <Input value={dr} onChange={e => setDr(e.target.value)} className="h-9 text-base w-[160px]" placeholder="000000" />
             </div>
           </div>
-          {/* Supplier, Load, Reset in a row */}
-          <div className="flex items-center gap-2 ml-6">
-            <label className="text-xs text-gray-500 font-medium min-w-[60px]">Supplier:</label>
-            <Input value={supplier} onChange={e => setSupplier(e.target.value)} className="h-9 text-base max-w-[120px]" placeholder="Supplier" />
-            <Button className="bg-gray-800 hover:bg-gray-900 text-white flex gap-2 items-center px-6 py-2 rounded-md font-semibold ml-4" onClick={handleLoad} disabled={loading}>
+        </div>
+        {/* Supplier */}
+        <div className="flex flex-col gap-2 w-full max-w-xs">
+          <div className="flex items-center gap-2">
+            <label className="text-base text-gray-800 font-medium min-w-[70px]">Supplier:</label>
+            <Input value={supplier} onChange={e => setSupplier(e.target.value)} className="h-9 text-base flex-1" placeholder="Supplier" />
+          </div>
+          <div className="flex gap-2 mt-2">
+            <Button className="bg-gray-800 hover:bg-gray-900 text-white flex-1 flex gap-2 items-center justify-center py-2 rounded-md font-semibold" onClick={handleLoad} disabled={loading}>
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />} Load
             </Button>
-            <Button className="bg-gray-800 hover:bg-gray-900 text-white flex gap-2 items-center px-6 py-2 rounded-md font-semibold" onClick={handleReset}>
+            <Button className="bg-gray-800 hover:bg-gray-900 text-white flex-1 flex gap-2 items-center justify-center py-2 rounded-md font-semibold" onClick={handleReset}>
               <X className="w-4 h-4" /> Reset
             </Button>
           </div>
         </div>
-        {/* Right: New Deliveries aligned with top controls */}
-        <div className="flex items-center gap-2 min-w-[320px] justify-end">
-          <div className="w-2 h-[48px] bg-black mr-4" />
-          <span className="font-medium text-sm">New Deliveries</span>
-          <div className="flex gap-2 flex-wrap">
-            {mockNewDeliveries.map(d => (
-              <span key={d.id} className="bg-blue-600 text-white px-4 py-1 rounded-full font-semibold text-xs flex items-center gap-2">
-                <List className="w-4 h-4" /> {d.dr} {d.supplier}
-              </span>
-            ))}
+        {/* New Deliveriess */}
+        <div className="flex items-start gap-3 min-w-[320px]">
+          <div className="w-2 h-16 bg-black mr-4" />
+          <div className="flex flex-col">
+            <span className="font-medium text-base mb-2">New Deliveries</span>
+            <div className="flex gap-2 flex-wrap">
+              {mockNewDeliveries.map(d => (
+                <span key={d.id} className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 shadow">
+                  <List className="w-4 h-4 text-white" /> DR {d.dr} {d.supplier}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -128,6 +158,7 @@ export default function DeliveriesPage() {
                 <TableHead className="px-4 py-3 text-left text-xs font-semibold text-gray-900">Item</TableHead>
                 <TableHead className="px-4 py-3 text-left text-xs font-semibold text-gray-900">Delivery Weight</TableHead>
                 <TableHead className="px-4 py-3 text-left text-xs font-semibold text-gray-900">Actual Weight</TableHead>
+                <TableHead className="px-4 py-3 text-left text-xs font-semibold text-gray-900">Box/es</TableHead>
                 <TableHead className="px-4 py-3 text-left text-xs font-semibold text-gray-900">Unit Price</TableHead>
                 <TableHead className="px-4 py-3 text-left text-xs font-semibold text-gray-900">Amount</TableHead>
                 <TableHead className="px-4 py-3 text-left text-xs font-semibold text-gray-900">Profit Margin</TableHead>
@@ -144,6 +175,7 @@ export default function DeliveriesPage() {
                   <TableCell className="px-4 py-3 text-sm text-gray-900">{item.item}</TableCell>
                   <TableCell className="px-4 py-3 text-sm text-gray-900">{item.deliveryWeight} kg</TableCell>
                   <TableCell className="px-4 py-3 text-sm text-gray-900">{item.actualWeight} kg</TableCell>
+                  <TableCell className="px-4 py-3 text-sm text-gray-900">{item.boxes}</TableCell>
                   <TableCell className="px-4 py-3 text-sm text-gray-900">Php {item.unitPrice.toFixed(2)}</TableCell>
                   <TableCell className="px-4 py-3 text-sm text-gray-900">Php {item.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</TableCell>
                   <TableCell className="px-4 py-3 text-sm text-gray-900">{item.profitMargin}</TableCell>
@@ -153,18 +185,7 @@ export default function DeliveriesPage() {
                   </TableCell>
                 </TableRow>
               ))}
-              {/* Placeholder row */}
-              <TableRow className="hover:bg-gray-50">
-                <TableCell className="px-4 py-3 text-sm text-gray-400">{pagedDeliveries.length + 1}</TableCell>
-                <TableCell className="px-4 py-3 text-sm text-gray-400">Placeholder</TableCell>
-                <TableCell className="px-4 py-3 text-sm text-gray-400">Placeholder</TableCell>
-                <TableCell className="px-4 py-3 text-sm text-gray-400">Placeholder</TableCell>
-                <TableCell className="px-4 py-3 text-sm text-gray-400">Placeholder</TableCell>
-                <TableCell className="px-4 py-3 text-sm text-gray-400">Placeholder</TableCell>
-                <TableCell className="px-4 py-3 text-sm text-gray-400">Placeholder</TableCell>
-                <TableCell className="px-4 py-3 text-sm text-gray-400">Placeholder</TableCell>
-                <TableCell className="px-4 py-3 text-sm text-gray-400">Placeholder</TableCell>
-              </TableRow>
+             
             </TableBody>
           </Table>
         </div>

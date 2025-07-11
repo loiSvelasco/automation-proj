@@ -7,12 +7,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Pencil, Trash2, Plus, Search, X, List, ArrowRight, ArrowLeft, CheckSquare, XSquare, Box, Undo2, ClipboardCheck, Clipboard, XCircle, ClipboardPlus } from "lucide-react";
 
 const mockSupplierReturns = [
-  { id: 1, srid: "000001", date: "7/5/2025", dr: "000001", product: "Belly", quantity: "10 kg", price: 400.00, amount: 4000, supplier: "Atkins", status: ["shipped"] },
-  { id: 2, srid: "000002", date: "7/6/2025", dr: "000001", product: "Head", quantity: "9 kg", price: 200.00, amount: 1800, supplier: "Agromet", status: ["returned", "condemned"] },
+  { id: 1, srid: "000001", date: "7/5/2025", dr: "000001", product: "Belly", quantity: "10 kg", boxes: 5, price: 400.00, amount: 4000, supplier: "Atkins", status: ["shipped"] },
+  { id: 2, srid: "000002", date: "7/6/2025", dr: "000001", product: "Head", quantity: "9 kg", boxes: 3, price: 200.00, amount: 1800, supplier: "Agromet", status: ["returned", "condemned"] },
 ];
 const mockMerchantReturns = [
-  { id: 1, mrid: "000001", date: "7/5/2025", dr: "000001", product: "Belly", quantity: "10 kg", price: 400.00, amount: 4000, merchant: "Juan", status: ["added"] },
-  { id: 2, mrid: "000002", date: "7/6/2025", dr: "000001", product: "Head", quantity: "9 kg", price: 200.00, amount: 1800, merchant: "Melchor", status: ["returned"] },
+  { id: 1, mrid: "000001", date: "7/5/2025", dr: "000001", product: "Belly", quantity: "10 kg", boxes: 5, price: 400.00, amount: 4000, merchant: "Juan", status: ["added"] },
+  { id: 2, mrid: "000002", date: "7/6/2025", dr: "000001", product: "Head", quantity: "9 kg", boxes: 3, price: 200.00, amount: 1800, merchant: "Melchor", status: ["returned"] },
 ];
 
 // Helper to render status icons/labels
@@ -95,6 +95,7 @@ export default function ReturnsPage() {
                 <TableHead className="px-2 py-3 text-left text-xs font-semibold text-gray-900">DR</TableHead>
                 <TableHead className="px-2 py-3 text-left text-xs font-semibold text-gray-900">Product</TableHead>
                 <TableHead className="px-2 py-3 text-left text-xs font-semibold text-gray-900">Quantity</TableHead>
+                <TableHead className="px-2 py-3 text-left text-xs font-semibold text-gray-900">Box/es</TableHead>
                 <TableHead className="px-2 py-3 text-left text-xs font-semibold text-gray-900">Selling Price</TableHead>
                 <TableHead className="px-2 py-3 text-left text-xs font-semibold text-gray-900">Amount</TableHead>
                 <TableHead className="px-2 py-3 text-left text-xs font-semibold text-gray-900">Supplier</TableHead>
@@ -115,6 +116,7 @@ export default function ReturnsPage() {
                   <TableCell className="px-2 py-3 text-sm text-gray-900">{item.dr}</TableCell>
                   <TableCell className="px-2 py-3 text-sm text-gray-900">{item.product}</TableCell>
                   <TableCell className="px-2 py-3 text-sm text-gray-900">{item.quantity}</TableCell>
+                  <TableCell className="px-2 py-3 text-sm text-gray-900">{item.boxes}</TableCell>
                   <TableCell className="px-2 py-3 text-sm text-gray-900">{item.price.toFixed(2)}</TableCell>
                   <TableCell className="px-2 py-3 text-sm text-gray-900">{item.amount}</TableCell>
                   <TableCell className="px-2 py-3 text-sm text-gray-900">{item.supplier}</TableCell>
@@ -220,6 +222,7 @@ export default function ReturnsPage() {
                 <TableHead className="px-2 py-3 text-left text-xs font-semibold text-gray-900">DR</TableHead>
                 <TableHead className="px-2 py-3 text-left text-xs font-semibold text-gray-900">Product</TableHead>
                 <TableHead className="px-2 py-3 text-left text-xs font-semibold text-gray-900">Quantity</TableHead>
+                <TableHead className="px-2 py-3 text-left text-xs font-semibold text-gray-900">Box/es</TableHead>
                 <TableHead className="px-2 py-3 text-left text-xs font-semibold text-gray-900">Selling Price</TableHead>
                 <TableHead className="px-2 py-3 text-left text-xs font-semibold text-gray-900">Amount</TableHead>
                 <TableHead className="px-2 py-3 text-left text-xs font-semibold text-gray-900">Merchant</TableHead>
@@ -240,6 +243,7 @@ export default function ReturnsPage() {
                   <TableCell className="px-2 py-3 text-sm text-gray-900">{item.dr}</TableCell>
                   <TableCell className="px-2 py-3 text-sm text-gray-900">{item.product}</TableCell>
                   <TableCell className="px-2 py-3 text-sm text-gray-900">{item.quantity}</TableCell>
+                  <TableCell className="px-2 py-3 text-sm text-gray-900">{item.boxes}</TableCell>
                   <TableCell className="px-2 py-3 text-sm text-gray-900">{item.price.toFixed(2)}</TableCell>
                   <TableCell className="px-2 py-3 text-sm text-gray-900">{item.amount}</TableCell>
                   <TableCell className="px-2 py-3 text-sm text-gray-900">{item.merchant}</TableCell>

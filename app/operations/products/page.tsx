@@ -8,12 +8,10 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@
 
 // Mock data for products
 const mockProducts = [
-  { id: 1, code: "PRD001", description: "Chicken Breast", short_description: "BRST", unit: "Kilo" },
-  { id: 2, code: "PRD002", description: "Pork Belly", short_description: "BLY", unit: "Kilo" },
-  { id: 3, code: "PRD003", description: "Beef Steak", short_description: "STK", unit: "Kilo" },
-  { id: 4, code: "PRD004", description: "Chicken Wings", short_description: "WNG", unit: "Kilo" },
-  { id: 5, code: "PRD005", description: "Pork Chops", short_description: "CHPS", unit: "Kilo" },
-]
+  { id: 1, productId: "000001", description: "Belly", shortDescription: "BLY", category: "Fast", unit: "Kilo", reorderLevels: "[100, 20] kls" },
+  { id: 2, productId: "000002", description: "Loin", shortDescription: "LN", category: "Slow", unit: "Kilo", reorderLevels: "[100, 5] kls" },
+  { id: 3, productId: "000003", description: "Ribs", shortDescription: "RB", category: "Fast", unit: "Kilo", reorderLevels: "[100, 4] kls" },
+];
 
 export default function RegisteredProducts() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -63,34 +61,38 @@ export default function RegisteredProducts() {
           <TableHeader>
             <TableRow>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-16">#</TableHead>
-              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Code</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Product ID</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Description</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Short Description</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Category</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Unit</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Reorder Levels</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-24">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mockProducts.map((product) => (
+            {mockProducts.map((product, idx) => (
               <TableRow key={product.id} className="hover:bg-gray-50">
-                <TableCell className="px-6 py-4 text-sm text-gray-900">{product.id}</TableCell>
-                <TableCell className="px-6 py-4 text-sm text-gray-900">{product.code}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900 font-bold">{idx + 1}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{product.productId}</TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{product.description}</TableCell>
-                <TableCell className="px-6 py-4 text-sm text-gray-900">{product.short_description}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{product.shortDescription}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{product.category}</TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{product.unit}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{product.reorderLevels}</TableCell>
                 <TableCell className="px-6 py-4">
                   <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => handleEdit(product.id)}
-                      className="text-gray-600 hover:text-gray-900 transition-colors"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </button>
                     <button
                       onClick={() => handleDelete(product.id)}
                       className="text-gray-600 hover:text-red-600 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleEdit(product.id)}
+                      className="text-gray-600 hover:text-gray-900 transition-colors"
+                    >
+                      <Edit className="w-4 h-4" />
                     </button>
                   </div>
                 </TableCell>

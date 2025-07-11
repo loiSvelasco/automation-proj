@@ -10,9 +10,9 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { Combobox, ComboboxOption } from "@/components/ui/combobox";
 
 const initialItems = [
-  { id: 1, dr: "000001", product: "Belly", actualWeight: "10 kg", unitCost: 400, sold: 0, retailPrice: 400, profitMargin: 0 },
-  { id: 2, dr: "000001", product: "Head", actualWeight: "9 kg", unitCost: 200, sold: 0, retailPrice: 210, profitMargin: 10 },
-  { id: 3, dr: "000001", product: "Loin", actualWeight: "5 kg", unitCost: 500, sold: 0, retailPrice: 400, profitMargin: 100 },
+  { id: 1, dr: "000001", product: "Belly", actualWeight: "10 kg", boxes: 5, unitCost: 400, sold: 0, sellingPrice: 400, profitMargin: 0 },
+  { id: 2, dr: "000001", product: "Head", actualWeight: "9 kg", boxes: 5, unitCost: 200, sold: 0, sellingPrice: 210, profitMargin: 10 },
+  { id: 3, dr: "000001", product: "Loin", actualWeight: "5 kg", boxes: 2, unitCost: 500, sold: 0, sellingPrice: 400, profitMargin: 100 },
 ];
 
 export default function PriceAdjustmentsPage() {
@@ -44,7 +44,7 @@ export default function PriceAdjustmentsPage() {
 
   return (
     <div className="flex flex-col bg-white">
-      <div className="max-w-7xl w-full mx-auto px-2 sm:px-4 py-2">
+      <div className="max-w-[1400px] w-full mx-auto px-6 py-4">
         {/* Top search/filter row */}
         <div className="flex flex-col md:flex-row items-end justify-between gap-4 md:gap-6 mb-8 w-full">
           {/* Find by DRs (Combobox) */}
@@ -61,7 +61,7 @@ export default function PriceAdjustmentsPage() {
               <Button className="h-9 px-4 text-base flex gap-2 items-center"><Search className="w-4 h-4" />Load Delivery</Button>
             </div>
           </div>
-          {/* Find by Product (Combobox) - aligned right */}
+          {/* Find by Product (Combobox) */}
           <div className="flex flex-col w-full md:min-w-[220px] md:max-w-xs border-l-2 border-black pl-4">
             <label htmlFor="product" className="text-xs text-gray-500 mb-1 font-medium">Find by Product</label>
             <div className="flex gap-2">
@@ -95,19 +95,20 @@ export default function PriceAdjustmentsPage() {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto border border-gray-200 rounded-lg w-full">
+        <div className="border border-gray-200 rounded-lg w-full">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-16">#</TableHead>
-                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">DR</TableHead>
-                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Product</TableHead>
-                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Actual Weight</TableHead>
-                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Unit Cost</TableHead>
-                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Sold</TableHead>
-                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Retail Price</TableHead>
-                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Profit Margin</TableHead>
-                <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Actions</TableHead>
+                <TableHead className="px-3 py-3 text-left text-sm font-medium text-gray-900 w-12">#</TableHead>
+                <TableHead className="px-3 py-3 text-left text-sm font-medium text-gray-900">DR</TableHead>
+                <TableHead className="px-3 py-3 text-left text-sm font-medium text-gray-900">Product</TableHead>
+                <TableHead className="px-3 py-3 text-left text-sm font-medium text-gray-900">Actual Weight</TableHead>
+                <TableHead className="px-3 py-3 text-left text-sm font-medium text-gray-900">Box/es</TableHead>
+                <TableHead className="px-3 py-3 text-left text-sm font-medium text-gray-900">Unit Cost</TableHead>
+                <TableHead className="px-3 py-3 text-left text-sm font-medium text-gray-900">Sold</TableHead>
+                <TableHead className="px-3 py-3 text-left text-sm font-medium text-gray-900">Selling Price</TableHead>
+                <TableHead className="px-3 py-3 text-left text-sm font-medium text-gray-900">Profit Margin</TableHead>
+                <TableHead className="px-3 py-3 text-left text-sm font-medium text-gray-900">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -116,15 +117,16 @@ export default function PriceAdjustmentsPage() {
                 item.product.toLowerCase().includes(search.toLowerCase())
               ).map((item, idx) => (
                 <TableRow key={item.id} className="hover:bg-gray-50">
-                  <TableCell className="px-6 py-4 text-sm text-gray-900">{(page - 1) * itemsPerPage + idx + 1}</TableCell>
-                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.dr}</TableCell>
-                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.product}</TableCell>
-                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.actualWeight}</TableCell>
-                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.unitCost.toFixed(2)}</TableCell>
-                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.sold}</TableCell>
-                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.retailPrice.toFixed(2)}</TableCell>
-                  <TableCell className="px-6 py-4 text-sm text-gray-900">{item.profitMargin.toFixed(2)}</TableCell>
-                  <TableCell className="px-6 py-4">
+                  <TableCell className="px-3 py-3 text-sm text-gray-900">{(page - 1) * itemsPerPage + idx + 1}</TableCell>
+                  <TableCell className="px-3 py-3 text-sm text-gray-900">{item.dr}</TableCell>
+                  <TableCell className="px-3 py-3 text-sm text-gray-900">{item.product}</TableCell>
+                  <TableCell className="px-3 py-3 text-sm text-gray-900">{item.actualWeight}</TableCell>
+                  <TableCell className="px-3 py-3 text-sm text-gray-900">{item.boxes}</TableCell>
+                  <TableCell className="px-3 py-3 text-sm text-gray-900">{item.unitCost !== undefined ? item.unitCost.toFixed(2) : ""}</TableCell>
+                  <TableCell className="px-3 py-3 text-sm text-gray-900">{item.sold}</TableCell>
+                  <TableCell className="px-3 py-3 text-sm text-gray-900">{item.sellingPrice !== undefined ? item.sellingPrice.toFixed(2) : ""}</TableCell>
+                  <TableCell className="px-3 py-3 text-sm text-gray-900">{item.profitMargin !== undefined ? item.profitMargin.toFixed(2) : ""}</TableCell>
+                  <TableCell className="px-3 py-3">
                     <Pencil className="w-4 h-4 text-gray-500 cursor-pointer" />
                   </TableCell>
                 </TableRow>
