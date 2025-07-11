@@ -1,15 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Edit, Trash2, Plus, List, ArrowBigRightDash } from "lucide-react";
+import { Search, Edit, Trash2, Plus, List, ArrowBigRightDash, Calendar as CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table"
+import { Calendar } from "@/components/ui/calendar";
+import EditOrderModal from "./EditOrderModal";
+import DeleteOrderModal from "./DeleteOrderModal";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 
 const initialOrders = [
-  { dr: "000001", description: "Belly", unitCost: "200.00/kl", quantity: 2, amount: 400.0 },
-  { dr: "000002", description: "Head", unitCost: "100.00/kl", quantity: 2, amount: 200.0 },
-  { dr: "000003", description: "Loin", unitCost: "500.00/kl", quantity: 1, amount: 500.0 },
+  { dr: "000001", description: "Belly", unitCost: "200.00/kl", quantity: 2, boxes: 2, amount: 400.0, date: new Date(2024, 3, 1) },
+  { dr: "000002", description: "Head", unitCost: "100.00/kl", quantity: 2, boxes: 2, amount: 200.0, date: new Date(2024, 3, 2) },
+  { dr: "000003", description: "Loin", unitCost: "500.00/kl", quantity: 1, boxes: 1, amount: 500.0, date: new Date(2024, 3, 3) },
 ];
 
 const itemOptions = ["Ribs", "Leg", "Ham"];
@@ -19,25 +23,86 @@ export default function OrdersPage() {
   const [merchant, setMerchant] = useState("");
   const [date, setDate] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<string[]>(["Ribs", "Ham"]);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [orderToEdit, setOrderToEdit] = useState<any>(null);
+  const [orderToDelete, setOrderToDelete] = useState<any>(null);
+  const [dateInput, setDateInput] = useState<string>("");
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   const handleNewOrder = () => {
     console.log("New Order clicked")
   }
 
   const handleEdit = (dr: string) => {
-    console.log("Edit order:", dr)
-  }
+    const order = orders.find(o => o.dr === dr);
+    setOrderToEdit(order);
+    setEditModalOpen(true);
+  };
 
   const handleDelete = (dr: string) => {
-    console.log("Delete order:", dr)
-  }
+    const order = orders.find(o => o.dr === dr);
+    setOrderToDelete(order);
+    setDeleteModalOpen(true);
+  };
 
   const handleAdd = () => {
     console.log("Add new order row")
   }
+
+  const filteredOrders = selectedDate
+    ? orders.filter(order =>
+        order.date &&
+        order.date.getFullYear() === selectedDate.getFullYear() &&
+        order.date.getMonth() === selectedDate.getMonth() &&
+        order.date.getDate() === selectedDate.getDate()
+      )
+    : orders;
+
+  // Pagination logic
+  const ITEMS_PER_PAGE = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(filteredOrders.length / ITEMS_PER_PAGE);
+  const paginatedOrders = filteredOrders.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const handleSaveEdit = (updatedOrder: any) => {
+    setOrders(orders =>
+      orders.map(o => (o.dr === updatedOrder.dr ? { ...updatedOrder, date: o.date } : o))
+    );
+  };
+
+  const handleConfirmDelete = () => {
+    if (orderToDelete) {
+      setOrders(orders => orders.filter(o => o.dr !== orderToDelete.dr));
+      setDeleteModalOpen(false);
+      setOrderToDelete(null);
+    }
+  };
+
+  // Set button applies the filter
+  const handleSetDate = () => {
+    if (dateInput) {
+      const parsed = new Date(dateInput);
+      if (!isNaN(parsed.getTime())) setSelectedDate(parsed);
+    } else {
+      setSelectedDate(undefined);
+    }
+  };
+
+  const handleCalendarSelect = (date: Date | undefined) => {
+    if (date) {
+      setDateInput(date.toISOString().slice(0, 10));
+      setCalendarOpen(false);
+    }
+  };
+
+  // Calculate summary totals from filteredOrders
+  const totalBoxes = filteredOrders.reduce((sum, o) => sum + (o.boxes || 0), 0);
+  const totalWeight = filteredOrders.reduce((sum, o) => sum + (o.quantity || 0), 0);
+  const totalAmount = filteredOrders.reduce((sum, o) => sum + (o.amount || 0), 0);
 
   return (
     <div className="bg-white">
@@ -45,7 +110,7 @@ export default function OrdersPage() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
         <div className="flex items-center flex-1 min-w-[220px]">
           {/* Vertical line */}
-          <div className="w-px h-8 bg-black mr-4" />
+          <div className="h-12 w-1 bg-black mr-4" />
           <span className="font-medium text-gray-600 mr-2">Merchant:</span>
           <Input
             className="w-full max-w-xs mr-2"
@@ -62,13 +127,31 @@ export default function OrdersPage() {
         </div>
         <div className="flex items-center gap-4 flex-1 min-w-[220px] justify-end">
           <span className="font-medium">Date:</span>
-          <Input
-            className="w-full max-w-xs"
-            placeholder="Placeholder"
-            value={date}
-            onChange={e => setDate(e.target.value)}
-          />
-          <Button className="bg-gray-800 hover:bg-gray-900 text-white flex gap-2 items-center">Set</Button>
+          <div className="flex items-center w-full max-w-xs gap-2">
+            <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+              <PopoverTrigger asChild>
+                <Input
+                  className="cursor-pointer bg-white"
+                  readOnly
+                  value={dateInput}
+                  placeholder="Select date"
+                  onClick={() => setCalendarOpen(true)}
+                />
+              </PopoverTrigger>
+              <PopoverContent align="start" className="p-2 w-auto">
+                <Calendar
+                  mode="single"
+                  selected={dateInput ? new Date(dateInput) : undefined}
+                  onSelect={handleCalendarSelect}
+                  className="border-none shadow-none"
+                />
+              </PopoverContent>
+            </Popover>
+            <Button className="bg-gray-800 hover:bg-gray-900 text-white flex gap-2 items-center" onClick={handleSetDate}>
+              <CalendarIcon className="w-4 h-4" />
+              Set
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -100,35 +183,37 @@ export default function OrdersPage() {
             <TableRow>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-16">#</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">DR</TableHead>
-              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Description</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Items</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Unit Cost</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Quantity</TableHead>
+              <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Box/es</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900">Amount</TableHead>
               <TableHead className="px-6 py-4 text-left text-sm font-medium text-gray-900 w-24">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders.map((order, idx) => (
+            {paginatedOrders.map((order, idx) => (
               <TableRow key={order.dr} className="hover:bg-gray-50">
-                <TableCell className="px-6 py-4 text-sm text-gray-900">{idx + 1}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{(currentPage - 1) * ITEMS_PER_PAGE + idx + 1}</TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{order.dr}</TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{order.description}</TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{order.unitCost}</TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{order.quantity}</TableCell>
+                <TableCell className="px-6 py-4 text-sm text-gray-900">{order.boxes}</TableCell>
                 <TableCell className="px-6 py-4 text-sm text-gray-900">{order.amount.toFixed(2)}</TableCell>
                 <TableCell className="px-6 py-4">
                   <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => handleEdit(order.dr)}
-                      className="text-gray-600 hover:text-gray-900 transition-colors"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </button>
                     <button
                       onClick={() => handleDelete(order.dr)}
                       className="text-gray-600 hover:text-red-600 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleEdit(order.dr)}
+                      className="text-gray-600 hover:text-gray-900 transition-colors"
+                    >
+                      <Edit className="w-4 h-4" />
                     </button>
                   </div>
                 </TableCell>
@@ -185,7 +270,7 @@ export default function OrdersPage() {
         </Table>
       </div>
 
-      {/* Bottom Section */}
+      {/* Bottom Section: Buttons and Pagination */}
       <div className="flex justify-between items-center mt-6">
         <div className="flex gap-4">
           <Button
@@ -194,7 +279,7 @@ export default function OrdersPage() {
           >
             <Plus className="w-4 h-4" />
             Add Item
-          </Button> 
+          </Button>
           <Button
             onClick={handleNewOrder}
             className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-md flex items-center gap-2"
@@ -204,15 +289,15 @@ export default function OrdersPage() {
           </Button>
         </div>
         {/* Pagination */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           <button
             className="px-3 py-1 text-sm text-gray-600 hover:text-gray-900 transition-colors"
             onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+            disabled={currentPage === 1}
           >
             Prev
           </button>
-
-          {[1, 2, 3, 4].map((page) => (
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <button
               key={page}
               onClick={() => setCurrentPage(page)}
@@ -223,15 +308,54 @@ export default function OrdersPage() {
               {page}
             </button>
           ))}
-
           <button
             className="px-3 py-1 text-sm text-gray-600 hover:text-gray-900 transition-colors"
-            onClick={() => setCurrentPage(Math.min(4, currentPage + 1))}
+            onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+            disabled={currentPage === totalPages}
           >
             Next
           </button>
         </div>
       </div>
+      {/* Summary Row */}
+      <div className="flex justify-start items-end gap-16 mt-8 mb-4">
+        <div className="flex items-center">
+          <div className="h-12 w-1 bg-black mr-4" />
+          <div className="flex flex-col items-start">
+            <div className="text-base text-gray-600 mb-1 font-medium">Total Number of Box</div>
+            <div className="text-4xl font-extrabold text-gray-900">{totalBoxes}</div>
+          </div>
+        </div>
+        <div className="flex items-center">
+          <div className="h-12 w-1 bg-black mr-4" />
+          <div className="flex flex-col items-start">
+            <div className="text-base text-gray-600 mb-1 font-medium">Total Actual Weight</div>
+            <div className="flex items-baseline">
+              <span className="text-4xl font-extrabold text-gray-900">{totalWeight}</span>
+              <span className="text-xl text-gray-700 ml-1 font-semibold">kg</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center">
+          <div className="h-12 w-1 bg-black mr-4" />
+          <div className="flex flex-col items-start">
+            <div className="text-base text-gray-600 mb-1 font-medium">Total Amount</div>
+            <div className="text-4xl font-extrabold text-gray-900">Php {totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+          </div>
+        </div>
+      </div>
+      <EditOrderModal
+        open={editModalOpen}
+        order={orderToEdit}
+        onSave={handleSaveEdit}
+        onClose={() => setEditModalOpen(false)}
+      />
+      <DeleteOrderModal
+        open={deleteModalOpen}
+        order={orderToDelete}
+        onDelete={handleConfirmDelete}
+        onClose={() => setDeleteModalOpen(false)}
+      />
     </div>
   );
 } 

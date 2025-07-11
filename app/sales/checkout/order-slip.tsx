@@ -11,6 +11,7 @@ interface OrderItem {
   quantity: number;
   amount: number;
   discount: number;
+  boxes?: number; // Added for summary calculation
 }
 
 interface OrderSlipProps {
@@ -82,6 +83,11 @@ export default function OrderSlipPage({ onBack, isModal = false }: OrderSlipProp
   const totalDiscount = calculateTotalDiscount();
   const tax = calculateTax(subtotal, totalDiscount);
   const total = subtotal - totalDiscount + tax;
+
+  // Calculate summary totals from items
+  const totalBoxes = sampleOrder.items.reduce((sum, o) => sum + (o.boxes || o.quantity || 0), 0); // fallback to quantity if boxes not present
+  const totalWeight = sampleOrder.items.reduce((sum, o) => sum + (o.quantity || 0), 0);
+  const totalAmount = sampleOrder.items.reduce((sum, o) => sum + (o.amount || 0), 0);
 
   return (
     <>
@@ -215,6 +221,33 @@ export default function OrderSlipPage({ onBack, isModal = false }: OrderSlipProp
                     ))}
                   </tbody>
                 </table>
+              </div>
+            </div>
+            {/* Summary Row */}
+            <div className="flex justify-start items-end gap-16 mt-8 mb-4">
+              <div className="flex items-center">
+                <div className="h-12 w-1 bg-black mr-4" />
+                <div className="flex flex-col items-start">
+                  <div className="text-base text-gray-600 mb-1 font-medium">Total Number of Box</div>
+                  <div className="text-4xl font-extrabold text-gray-900">{totalBoxes}</div>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <div className="h-12 w-1 bg-black mr-4" />
+                <div className="flex flex-col items-start">
+                  <div className="text-base text-gray-600 mb-1 font-medium">Total Actual Weight</div>
+                  <div className="flex items-baseline">
+                    <span className="text-4xl font-extrabold text-gray-900">{totalWeight}</span>
+                    <span className="text-xl text-gray-700 ml-1 font-semibold">kg</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <div className="h-12 w-1 bg-black mr-4" />
+                <div className="flex flex-col items-start">
+                  <div className="text-base text-gray-600 mb-1 font-medium">Total Amount</div>
+                  <div className="text-4xl font-extrabold text-gray-900">Php {totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+                </div>
               </div>
             </div>
 
